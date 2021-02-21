@@ -14,7 +14,7 @@ export const verifyToken = async (req, res, next) => {
 		const user = await User.findById(decoded.id, { password: 0 });
 		req.userId = user._id;
 		req.tienda = user.tienda;
-		if (!user) return res.status(404).json({ message: 'usuario no encontrado' });
+		if (!user) return res.status(404).json({ message: 'usuario no encontrado', preferencias: null });
 
 		next();
 	} catch (error) {
