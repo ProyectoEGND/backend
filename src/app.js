@@ -5,6 +5,7 @@ import pkg from '../package.json';
 import ProductsRoute from './routes/products.routes';
 import UsersRoute from './routes/users.route';
 import AuthRoute from './routes/auth.route';
+import CheckOutRoute from './routes/checkout.route';
 import { createRole, createProduct } from './libs/confInicial';
 import bodyParser from 'body-parser';
 import { getTienda as tienda, getProductos as productos } from './controllers/tienda';
@@ -33,5 +34,6 @@ app.get('/:tienda/productos', productos);
 app.use('/api/products', ProductsRoute);
 app.use('/api/auth', AuthRoute);
 app.use('/api/user', UsersRoute);
+app.use('/api/checkout', CheckOutRoute);
 
 export default app;
