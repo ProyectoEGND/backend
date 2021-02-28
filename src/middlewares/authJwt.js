@@ -8,7 +8,7 @@ export const verifyToken = async (req, res, next) => {
 		console.log('entro');
 		const token = req.headers['x-access-token'];
 
-		if (!token) return res.status(403).json({ message: 'enviar token' });
+		if (!token) return res.status(403).json({ mensaje: 'enviar token' });
 		const decoded = jwt.verify(token, config.SECRET);
 
 		const user = await User.findById(decoded.id, { password: 0 });
