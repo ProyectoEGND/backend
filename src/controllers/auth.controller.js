@@ -4,20 +4,25 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import nodemailer from 'nodemailer';
 export const signIn = async (req, res) => {
+	console.log('llego');
+	console.log(req.body);
 	const userFound = await User.findOne({ email: req.body.email }).populate('roles');
 	if (!userFound) {
-		res.status(400).json({ message: 'user not found' });
+		res.status(400).json({ message: 'user not found', role: ['vendedor'] });
+	} else {
+		console.log(userFound);
+
+		const matchPassword = await User.comparePassword(req.body.password, userFound.password);
+
+		if (!matchPassword) return res.status(401).json({ token: null, message: 'validar datos ingresados' });
+
+		const token = jwt.sign({ id: userFound._id }, config.SECRET, {
+			expiresIn: 86400,
+		});
+		let admin = userFound.roles.find((role) => role.name === 'Admin');
+		console.log(admin);
+		res.json({ token, role: userFound.roles });
 	}
-
-	const matchPassword = await User.comparePassword(req.body.password, userFound.password);
-
-	if (!matchPassword) return res.status(401).json({ token: null, message: 'validar datos ingresados' });
-
-	const token = jwt.sign({ id: userFound._id }, config.SECRET, {
-		expiresIn: 86400,
-	});
-
-	res.json({ token });
 };
 export const signUp = async (req, res) => {
 	const {

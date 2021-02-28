@@ -1,5 +1,8 @@
 import { response } from 'express';
 import Users from '../models/users';
+import Role from '../models/roles';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
 export const getUsers = async (req, res) => {
 	const users = await Users.find();
@@ -11,16 +14,10 @@ export const getUserById = async (req, res) => {
 	res.status(200).json(user);
 };
 export const getUserPreferenciasById = async (req, res) => {
-	console.log(req.userId);
 	const user = await Users.findById(req.userId);
 	res.status(200).json(user.preferencias);
 };
 export const updateUserPreferenciasById = async (req, res) => {
-	if (req.files) {
-		console.log(req.body);
-		console.log(req.files);
-	}
-
 	// const user = await Users.findById(req.params.userId);
 	res.status(200);
 };
@@ -32,7 +29,7 @@ export const updateHeadById = async (req, res) => {
 	// const { filename } = req.file;
 	// console.log(filename);
 	const user = await Users.findById(req.userId);
-	console.log(req.body.titulo);
+
 	let preferencias = user.preferencias;
 
 	preferencias.titulo = req.body.titulo;
@@ -43,7 +40,7 @@ export const updateHeadById = async (req, res) => {
 
 	if (req.file) {
 		const { filename } = req.file;
-		console.log(filename);
+
 		preferencias.logo = `http://186.122.145.218:4000/public/${filename}`;
 	}
 
@@ -54,7 +51,7 @@ export const updateHeadById = async (req, res) => {
 			new: true,
 		}
 	);
-	console.log(preferencias);
+
 	res.status(200).json(userActualizado);
 };
 
@@ -70,7 +67,7 @@ export const updateModalById = async (req, res) => {
 
 	if (req.file) {
 		const { filename } = req.file;
-		console.log(filename);
+
 		preferencias.imodal = `http://186.122.145.218:4000/public/${filename}`;
 	}
 
@@ -81,7 +78,7 @@ export const updateModalById = async (req, res) => {
 			new: true,
 		}
 	);
-	console.log(preferencias);
+
 	res.status(200).json(req.body);
 };
 
@@ -117,7 +114,7 @@ export const updateFooterById = async (req, res) => {
 			new: true,
 		}
 	);
-	console.log(preferencias);
+
 	res.status(200).json(req.body);
 };
 
@@ -150,7 +147,7 @@ export const updateCuerpoById = async (req, res) => {
 			new: true,
 		}
 	);
-	console.log(preferencias);
+
 	res.status(200).json(userActualizado);
 };
 
@@ -172,25 +169,23 @@ export const updateRedes = async (req, res) => {
 			new: true,
 		}
 	);
-	console.log(preferencias);
+
 	res.status(200).json(userActualizado);
 };
 
 export const updateUserById = async (req, res) => {
-	console.log(req.body);
 	const userActualizado = await Users.findByIdAndUpdate(req.params.userId, req.body, {
 		new: true,
 	});
-	console.log(userActualizado);
+
 	res.status(200).json(userActualizado);
 };
 
 export const updateUserById2 = async (req, res) => {
-	console.log(req.body);
 	const userActualizado = await Users.findByIdAndUpdate(req.userId, req.body, {
 		new: true,
 	});
-	console.log(userActualizado);
+
 	res.status(200).json(userActualizado);
 };
 
@@ -203,8 +198,8 @@ export const updateUserByIdImg = async (req, res) => {
 };
 
 export const deleteUserById = async (req, res) => {
-	// const userEliminado = await Users.findByIdAndDelete(req.params.userId);
-	const userEliminado = await Users.deleteMany();
+	const userEliminado = await Users.findByIdAndDelete(req.params.userId);
+	// const userEliminado = await Users.deleteMany();
 	res.status(204).json();
 };
 
@@ -215,7 +210,7 @@ export const reasignarUserById = async (req, res) => {
 	const usuarioActualizado = await Users.updateMany(myquery, newvalues, {
 		new: true,
 	});
-	console.log(usuarioActualizado);
+
 	res.status(204).json();
 };
 
@@ -232,7 +227,17 @@ export const pertenecen = async (req, res) => {
 		if (err) {
 			res.send(err);
 		}
-		console.log(user);
+
+		res.json(user);
+	});
+};
+
+export const usuarioContenidos = async (req, res) => {
+	const userFound = await Users.find({ padre: req.padre }, function (err, user) {
+		if (err) {
+			res.send(err);
+		}
+
 		res.json(user);
 	});
 };
@@ -242,7 +247,7 @@ export const revendedores = async (req, res) => {
 		if (err) {
 			res.send(err);
 		}
-		console.log(user);
+
 		res.json(user);
 	});
 	if (!userFound) {
@@ -252,6 +257,7 @@ export const revendedores = async (req, res) => {
 };
 
 export const topten = async (req, res) => {
+	const userFound = await Users.find();
 	const users = await Users.aggregate([{ $group: { _id: '$padre', vendedores: { $sum: 1 } } }]);
 	users.sort(function (a, b) {
 		if (a.vendedores < b.vendedores) {
@@ -263,8 +269,24 @@ export const topten = async (req, res) => {
 		// a must be equal to b
 		return 0;
 	});
+	let topten = [];
+	let variable2 = [];
+	users.map((user) => {
+		console.log(user);
 
-	res.json(users);
+		userFound
+			.filter((filtrado) => filtrado.padre === req.padre)
+			.map((usuario) => {
+				console.log(usuario.username, user._id);
+				if (usuario.username === user._id) {
+					variable2.push({ usuario: usuario.username, vendedores: user.vendedores });
+				}
+			});
+		let variable = userFound.filter((usuario) => usuario.username == user._id);
+		topten.push(variable);
+	});
+
+	res.json(variable2);
 };
 
 export const vencimiento = async (req, res) => {
@@ -274,9 +296,112 @@ export const vencimiento = async (req, res) => {
 			console.log('hubo un error');
 			return res.status(500).json({ error: err.message }); //debes enviar una respuesta o llamar al manejador de errores (return next(err))
 		}
-		console.log(act);
+
 		return res.status(200).json(act); // en este ejemplo se envía el resultado
 	});
 
 	res.json(users);
+};
+
+export const createUsers = async (req, res) => {
+	const { username, email, tienda, cuit, celular, password, roles, nombre, estado, desarrollado } = req.body;
+	const defaultValue = {
+		desarrollado,
+		fuenteH: 'Monserrat',
+		fuenteC: 'Monserrat',
+		fuenteF: 'Monserrat',
+		hoverColor: '#ff00ff00',
+		selectColor: '#ff00ff00',
+		fColorH: '#ff0000ff',
+		fColorC: '#000000ff',
+		fColorF: '#ff0000ff',
+		tColorH: '#ffffffff',
+		tColorC: '#ffffffff',
+		tColorF: '#ffffffff',
+		titulo: 'Tienda de prueba',
+		pie: 'Pie de prueba',
+		moneda: 'PESO',
+		imagenesH: [],
+		imagenesC: [],
+		imagenesF: [],
+		modal: true,
+		tmodal: 'texto de prueba',
+		imodal: 'null',
+		logo: 'http://186.122.145.218:4000/public/logo.jpg',
+		whatsapp: '#',
+		youtube: '#',
+		facebook: '#',
+		instagram: '#',
+		LinkExterno: 'String',
+		textlink: '',
+		terminosColor: '#00ff00',
+		GeoTienda: 'String',
+		terminos:
+			'{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+	};
+	const validaEmail = await Users.findOne({ email: req.body.email });
+	const validaUsuario = await Users.findOne({ username: req.body.username });
+	const validaCuit = await Users.findOne({ cuit: req.body.email });
+
+	try {
+		let d = new Date();
+		const newUser = new Users({
+			username,
+			email,
+			tienda: 'sin datos',
+			cuit,
+			nombre,
+			celular,
+			estado,
+			padre: req.padre,
+			preferencias: defaultValue,
+
+			licencia: d.setDate(d.getDate() + 30),
+			password: await Users.encryptPassword(password),
+		});
+
+		if (tienda) {
+			newUser.tienda = req.tienda;
+		}
+
+		if (req.padre) {
+			newUser.padre = req.padre;
+		} else {
+			newUser.padre = 'Admin';
+		}
+
+		if (!estado) {
+			newUser.estado = 'Activo';
+		} else {
+			newUser.estado = estado;
+		}
+
+		if (roles) {
+			const foundRole = await Role.find({ name: { $in: roles } });
+			newUser.roles = foundRole.map((role) => role._id);
+		} else {
+			const role = await Role.findOne({ name: 'Vendedor' });
+			newUser.roles = [role._id];
+		}
+		const savedUser = await newUser.save();
+
+		const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
+			expiresIn: 86400,
+		});
+
+		res.json({ message: 'Usuario dato de alta' });
+	} catch (error) {
+		console.log(error);
+		if (validaUsuario) {
+			res.json({ message: 'Razon social ya existe' });
+		} else if (validaEmail) {
+			res.json({ message: 'El email ya existe' });
+		} else if (validaCuit) {
+			res.json({ message: 'El cuil ya existe' });
+		} else {
+			res.json({ message: 'error inesperado' });
+		}
+	}
+
+	// enviar(email).catch(console.error);
 };

@@ -27,8 +27,10 @@ router.put('/:userId', userCrt.updateUserById);
 router.delete('/:userId', userCrt.deleteUserById);
 router.post('/desactivar/:userId', userCrt.desactivar);
 router.post('/pertenecen', userCrt.pertenecen);
-router.post('/topten', userCrt.topten);
+router.post('/topten', verifyToken, userCrt.topten);
 router.post('/vencimiento', userCrt.vencimiento);
 router.post('/revendedores', userCrt.revendedores);
+router.post('/contenidos', verifyToken, userCrt.usuarioContenidos);
+router.post('/alta', verifyToken, userCrt.createUsers);
 
 export default router;
