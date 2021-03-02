@@ -361,7 +361,7 @@ export const createUsers = async (req, res) => {
 		});
 
 		if (tienda) {
-			newUser.tienda = req.tienda;
+			newUser.tienda = tienda;
 		}
 
 		if (req.padre) {
