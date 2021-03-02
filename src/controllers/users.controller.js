@@ -335,7 +335,8 @@ export const createUsers = async (req, res) => {
 		LinkExterno: 'String',
 		textlink: '',
 		terminosColor: '#00ff00',
-		GeoTienda: 'String',
+		GeoTienda:
+			'<iframe src="https://www.google.com/maps/d/embed?mid=1yBH-p8EWCRv1noPnlW9wP8nMp7Q&hl=es" width="640" height="480"></iframe>',
 		terminos:
 			'{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
 	};
