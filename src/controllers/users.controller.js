@@ -424,7 +424,7 @@ export const createUsers = async (req, res) => {
 		const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
 			expiresIn: 86400,
 		});
-		enviar(email, tienda, username).catch(console.error);
+		// enviar(email, tienda, username).catch(console.error);
 		res.json({ message: 'Usuario dato de alta' });
 	} catch (error) {
 		console.log(error);
