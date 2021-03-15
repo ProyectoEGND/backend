@@ -70,6 +70,7 @@ export const signUp = async (req, res) => {
 		textlink: '',
 		terminosColor: '#00ff00',
 		GeoTienda: 'String',
+		preguntas: [],
 		terminos:
 			'{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
 	};
@@ -87,6 +88,10 @@ export const signUp = async (req, res) => {
 		celular,
 		estado,
 		padre,
+		mercadopago: {
+			activo: false,
+			accessToken: '',
+		},
 		preferencias: defaultValue,
 		redes,
 		licencia: d.setDate(d.getDate() + 30),
