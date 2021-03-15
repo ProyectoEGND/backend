@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import bodyParser from 'body-parser';
 
 const preferenciasSchema = new Schema({
 	fuenteH: String,
@@ -73,6 +74,10 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		mercadoPago: {
+			activo: Boolean,
+			accessToken: String,
+		},
 
 		// preferencias: [{ type: String, required: false }],
 		// preferencias: preferenciasSchema,
@@ -109,6 +114,7 @@ const userSchema = new Schema(
 			textlink: String,
 			GeoTienda: String,
 			Variedades: [{ String }],
+			preguntas: [{ type: String }],
 			logo: {
 				type: String,
 			},

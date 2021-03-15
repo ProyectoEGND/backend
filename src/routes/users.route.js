@@ -9,9 +9,11 @@ router.put('/updateCabecera', verifyToken, upload.single('logo'), userCrt.update
 router.get('/verPreferencias', verifyToken, userCrt.getUserPreferenciasById);
 router.put('/updateModal', verifyToken, upload.single('imodal'), userCrt.updateModalById);
 router.put('/updateHeader', verifyToken, upload.single('logo'), userCrt.updateHeadById);
+
 router.put('/updateBody', verifyToken, upload.any('superior'), userCrt.updateCuerpoById);
 router.put('/updateFooter', verifyToken, upload.any('inferior'), userCrt.updateFooterById);
 router.put('/upgradePreferencias', verifyToken, userCrt.updateUserById2);
+router.get('/getMP', verifyToken, userCrt.getMercadoPagoById);
 
 router.get('/', userCrt.getUsers);
 router.get('/:userId', userCrt.getUserById);
@@ -32,5 +34,5 @@ router.post('/vencimiento', userCrt.vencimiento);
 router.post('/revendedores', userCrt.revendedores);
 router.post('/contenidos', verifyToken, userCrt.usuarioContenidos);
 router.post('/alta', verifyToken, userCrt.createUsers);
-
+router.post('/updatePreguntas', verifyToken, userCrt.updatePreguntasById);
 export default router;

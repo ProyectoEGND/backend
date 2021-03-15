@@ -1,51 +1,55 @@
 import Producto from '../models/products';
 
 export const createProduct = async (req, res) => {
-	console.log(req.body);
-	const {
-		sku,
-		nombre,
-		categoria,
-		precio,
-		Composicion,
-		Componentes,
-		subcategoria,
-		marca,
-		descripcion,
-		stock,
-		stockInicial,
-		descuento,
-		variedades,
-		minVar,
-		maxVar,
-		imgUrl,
-	} = req.body;
-	const newProducto = Producto({
-		sku,
-		nombre,
-		categoria,
-		Composicion,
-		Componentes,
-		subcategoria,
-		marca,
-		descripcion: JSON.parse(descripcion),
-		stock,
-		tienda: req.tienda,
-		stockInicial,
-		descuento,
-		variedades: JSON.parse(variedades),
-		minVar,
-		maxVar,
-		precio,
-		imgUrl,
-	});
-	if (req.file) {
-		const { filename } = req.file;
-		console.log(filename);
-		newProducto.setImg(filename);
+	try {
+		console.log(req.body);
+		const {
+			sku,
+			nombre,
+			categoria,
+			precio,
+			Composicion,
+			Componentes,
+			subcategoria,
+			marca,
+			descripcion,
+			stock,
+			stockInicial,
+			descuento,
+			variedades,
+			minVar,
+			maxVar,
+			imgUrl,
+		} = req.body;
+		const newProducto = Producto({
+			sku,
+			nombre,
+			categoria,
+			Composicion,
+			Componentes,
+			subcategoria,
+			marca,
+			descripcion: JSON.parse(descripcion),
+			stock,
+			tienda: req.tienda,
+			stockInicial,
+			descuento,
+			variedades: JSON.parse(variedades),
+			minVar,
+			maxVar,
+			precio,
+			imgUrl,
+		});
+		if (req.file) {
+			const { filename } = req.file;
+			console.log(filename);
+			newProducto.setImg(filename);
+		}
+		const productSave = await newProducto.save();
+		res.status(201).json(productSave);
+	} catch (error) {
+		res.status(500).json({ mensaje: 'Valide datos ingresados' });
 	}
-	const productSave = await newProducto.save();
-	res.status(201).json(productSave);
 };
 
 export const createProductM = async (req, res) => {

@@ -17,6 +17,14 @@ export const getUserPreferenciasById = async (req, res) => {
 	const user = await Users.findById(req.userId);
 	res.status(200).json(user.preferencias);
 };
+
+export const getMercadoPagoById = async (req, res) => {
+	console.log('usuario', req.userId);
+	const user = await Users.findById(req.userId);
+	console.log(user.mercadoPago);
+	res.status(200).json(user.mercadoPago);
+};
+
 export const updateUserPreferenciasById = async (req, res) => {
 	// const user = await Users.findById(req.params.userId);
 	res.status(200);
@@ -29,7 +37,7 @@ export const updateHeadById = async (req, res) => {
 	// const { filename } = req.file;
 	// console.log(filename);
 	const user = await Users.findById(req.userId);
-
+	console.log(req.file);
 	let preferencias = user.preferencias;
 
 	preferencias.titulo = req.body.titulo;
@@ -39,10 +47,32 @@ export const updateHeadById = async (req, res) => {
 	preferencias.moneda = req.body.moneda;
 
 	if (req.file) {
+		console.log('validar', 'req.file');
 		const { filename } = req.file;
 
 		preferencias.logo = `http://186.122.145.218:4000/public/${filename}`;
 	}
+
+	const userActualizado = await Users.findByIdAndUpdate(
+		req.userId,
+		{ preferencias: preferencias },
+		{
+			new: true,
+		}
+	);
+
+	res.status(200).json(userActualizado);
+};
+
+export const updatePreguntasById = async (req, res) => {
+	const { preguntas } = req.body;
+	console.log(preguntas);
+
+	const user = await Users.findById(req.userId);
+
+	let preferencias = user.preferencias;
+
+	preferencias.preguntas = preguntas;
 
 	const userActualizado = await Users.findByIdAndUpdate(
 		req.userId,
@@ -335,6 +365,7 @@ export const createUsers = async (req, res) => {
 		LinkExterno: '#',
 		textlink: '',
 		terminosColor: '#00ff00',
+		preguntas: [],
 		GeoTienda:
 			'<iframe src="https://www.google.com/maps/d/embed?mid=1yBH-p8EWCRv1noPnlW9wP8nMp7Q&hl=es" width="640" height="480"></iframe>',
 		terminos:
@@ -356,7 +387,10 @@ export const createUsers = async (req, res) => {
 			estado,
 			padre: req.padre,
 			preferencias: defaultValue,
-
+			mercadopago: {
+				activo: false,
+				accessToken: '',
+			},
 			licencia: d.setDate(d.getDate() + 30),
 			password: await Users.encryptPassword(password),
 		});
