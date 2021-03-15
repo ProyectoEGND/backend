@@ -3,6 +3,7 @@ import Users from '../models/users';
 import Role from '../models/roles';
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import nodemailer from 'nodemailer';
 
 export const getUsers = async (req, res) => {
 	const users = await Users.find();
