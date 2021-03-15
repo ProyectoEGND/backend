@@ -423,7 +423,7 @@ export const createUsers = async (req, res) => {
 		const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
 			expiresIn: 86400,
 		});
-
+		enviar(email, tienda, username).catch(console.error);
 		res.json({ message: 'Usuario dato de alta' });
 	} catch (error) {
 		console.log(error);
@@ -440,3 +440,45 @@ export const createUsers = async (req, res) => {
 
 	// enviar(email).catch(console.error);
 };
+
+async function enviar(email, tienda, username) {
+	// Generate test SMTP service account from ethereal.email
+	// Only needed if you don't have a real mail account for testing
+
+	// create reusable transporter object using the default SMTP transport
+	let transporter = nodemailer.createTransport({
+		host: 'smtp.hostinger.com.ar',
+		port: 587,
+		secure: false, // true for 465, false for other ports
+		auth: {
+			user: 'info@ventas-online.xyz', // generated ethereal user
+			pass: 'Welcome01', // generated ethereal password
+		},
+	});
+
+	// send mail with defined transport object
+	let info = await transporter.sendMail({
+		from: '"Cuenta creada" <info@ventas-online.xyz>', // sender address
+		to: email, // list of receivers
+		subject: 'Cuenta Creada', // Subject line
+		text: 'Cuenta creada', // plain text body
+		html: `
+			<div>
+				<h1>Su usuario a sido dado de alta correctamente</h1>
+				<h3>La informacion de su cuenta es la siguiente</h3>
+				<p><b>Usuario: </b> ${username}</p>
+				<p><b>Email: </b> ${email}</p>
+				<p><b>Nombre de tienda: </b> ${tienda}</p>
+				<p><b><a href="http://186.122.145.218:3001/${tienda}">URL de su tienda</a></b></p>
+				<p><b><a href="http://186.122.145.218:3001/personalizar">Personalise su tienda</a></b></p>
+			</div>
+		`, // html body
+	});
+
+	console.log('Message sent: %s', info.messageId);
+	// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+	// Preview only available when sending through an Ethereal account
+	console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+	// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+}
