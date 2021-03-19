@@ -4,18 +4,42 @@ import Producto from '../models/products';
 
 export const getTienda = async (req, res) => {
 	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
-	await console.log(foundPreference.length);
-	console.log('ok');
+
 	if (foundPreference.length == 0) {
 		res.status(404).json({ tienda: 'inexistente' });
 	} else {
-		res.status(200).json(foundPreference[0].preferencias);
+		let preferencias = foundPreference[0].preferencias;
+
+		preferencias.estadoTienda = estadoCerrado(preferencias.horario);
+		console.log('preferencias', preferencias.estadoTienda);
+
+		res.status(200).json(preferencias);
 	}
 };
 
 export const getProductos = async (req, res) => {
 	const foundProducto = await Producto.find({ tienda: { $in: req.params.tienda } });
-	await console.log(foundProducto);
-	console.log('ok');
+
 	res.status(200).json(foundProducto);
+};
+
+const estadoCerrado = (dias) => {
+	let horario = new Date();
+	let dia = dias[horario.getDay()];
+	let hora = horario.getHours();
+	let estado;
+
+	if (dia.apertura > hora && (dia.cierre < hora) & (dia.cierre < dia.apertura)) {
+		estado = false;
+	} else if ((dia.apertura > hora || dia.cierre < hora) && dia.cierre > dia.apertura) {
+		estado = false;
+	} else if (dia.apertura === dia.cierre) {
+		estado = true;
+	} else {
+		estado = true;
+	}
+
+	console.log(dia, horario.getDay(), estado);
+
+	return estado;
 };

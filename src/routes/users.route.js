@@ -22,6 +22,7 @@ router.post('/reasigna', userCrt.reasignarUserById);
 
 router.put('/masivo/:userId', userCrt.updateUserByIdImg);
 router.put('/redes', verifyToken, userCrt.updateRedes);
+router.put('/horarios', verifyToken, userCrt.updateHorarioById);
 router.put('/:userId', userCrt.updateUserById);
 
 // router.put('/updateCuerpo', verifyToken, upload.any('superior'), userCrt.updateCuerpoById);

@@ -21,6 +21,7 @@ const preferenciasSchema = new Schema({
 	whatsapp: String,
 	LinkExterno: String,
 	GeoTienda: String,
+	montoMin: Number,
 	Variedades: [{ String }],
 	logo: {
 		type: String,
@@ -83,6 +84,14 @@ const userSchema = new Schema(
 		// preferencias: preferenciasSchema,
 		preferencias: {
 			desarrollado: String,
+			estadoTienda: Boolean,
+			mensajeCerrado: String,
+			horario: [
+				{
+					apertura: Number,
+					cierre: Number,
+				},
+			],
 			terminos: String,
 			fuenteH: String,
 			fuenteC: String,
@@ -118,6 +127,7 @@ const userSchema = new Schema(
 			logo: {
 				type: String,
 			},
+			montoMin: Number,
 		},
 	},
 	{

@@ -4,17 +4,16 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import nodemailer from 'nodemailer';
 export const signIn = async (req, res) => {
-	console.log('llego');
-	console.log(req.body);
-	const userFound = await User.findOne({ email: req.body.email }).populate('roles');
+	let email = req.body.email.toLowerCase();
+
+	const userFound = await User.findOne({ email: email }).populate('roles');
 	if (!userFound) {
 		res.status(400).json({ message: 'user not found', role: ['vendedor'] });
 	} else {
-		console.log(userFound);
-
 		const matchPassword = await User.comparePassword(req.body.password, userFound.password);
 
-		if (!matchPassword) return res.status(401).json({ token: null, message: 'validar datos ingresados' });
+		if (!matchPassword)
+			return res.status(401).json({ token: null, message: 'validar datos ingresados', role: 'vendedor' });
 
 		const token = jwt.sign({ id: userFound._id }, config.SECRET, {
 			expiresIn: 86400,
@@ -41,6 +40,38 @@ export const signUp = async (req, res) => {
 	} = req.body;
 	const defaultValue = {
 		desarrollado,
+		estadoTienda: true,
+		mensajeCerrado: 'Esta Cerrado',
+		horario: [
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+		],
 		fuenteH: 'Monserrat',
 		fuenteC: 'Monserrat',
 		fuenteF: 'Monserrat',
@@ -68,6 +99,7 @@ export const signUp = async (req, res) => {
 		instagram: '#',
 		LinkExterno: 'String',
 		textlink: '',
+		montoMin: 0,
 		terminosColor: '#00ff00',
 		GeoTienda: 'String',
 		preguntas: [],
@@ -88,7 +120,7 @@ export const signUp = async (req, res) => {
 		celular,
 		estado,
 		padre,
-		mercadopago: {
+		mercadoPago: {
 			activo: false,
 			accessToken: '',
 		},

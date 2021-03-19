@@ -23,7 +23,7 @@ export const getMercadoPagoById = async (req, res) => {
 	console.log('usuario', req.userId);
 	const user = await Users.findById(req.userId);
 	console.log(user.mercadoPago);
-	res.status(200).json(user.mercadoPago);
+	res.status(200).json({ mp: user.mercadoPago, minimo: user.preferencias.montoMin });
 };
 
 export const updateUserPreferenciasById = async (req, res) => {
@@ -63,6 +63,28 @@ export const updateHeadById = async (req, res) => {
 	);
 
 	res.status(200).json(userActualizado);
+};
+
+export const updateHorarioById = async (req, res) => {
+	// console.log(req.body);
+	// const { filename } = req.file;
+	// console.log(filename);
+	const user = await Users.findById(req.userId);
+
+	let preferencias = user.preferencias;
+
+	preferencias.horario = req.body.horario;
+	preferencias.mensajeCerrado = req.body.mensajeCerrado;
+
+	const userActualizado = await Users.findByIdAndUpdate(
+		req.userId,
+		{ preferencias: preferencias },
+		{
+			new: true,
+		}
+	);
+
+	res.status(200).json({ mensaje: 'horario actualizado' });
 };
 
 export const updatePreguntasById = async (req, res) => {
@@ -213,7 +235,21 @@ export const updateUserById = async (req, res) => {
 };
 
 export const updateUserById2 = async (req, res) => {
-	const userActualizado = await Users.findByIdAndUpdate(req.userId, req.body, {
+	let update;
+	console.log(req.body.montoMin);
+	if (req.body.montoMin) {
+		const user = await Users.findById(req.userId);
+		let preferencias = user.preferencias;
+		preferencias.montoMin = req.body.montoMin;
+		update = {
+			mercadoPago: req.body.mercadoPago,
+			preferencias,
+		};
+	} else {
+		update = req.body;
+	}
+
+	const userActualizado = await Users.findByIdAndUpdate(req.userId, update, {
 		new: true,
 	});
 
@@ -337,7 +373,40 @@ export const vencimiento = async (req, res) => {
 export const createUsers = async (req, res) => {
 	const { username, email, tienda, cuit, celular, password, roles, nombre, estado, desarrollado } = req.body;
 	const defaultValue = {
+		estadoTienda: true,
+		mensajeCerrado: 'Esta Cerrado',
+		horario: [
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+			{
+				apertura: 0,
+				cierre: 0,
+			},
+		],
 		desarrollado,
+		montoMin: 0,
 		fuenteH: 'Monserrat',
 		fuenteC: 'Monserrat',
 		fuenteF: 'Monserrat',
@@ -388,7 +457,7 @@ export const createUsers = async (req, res) => {
 			estado,
 			padre: req.padre,
 			preferencias: defaultValue,
-			mercadopago: {
+			mercadoPago: {
 				activo: false,
 				accessToken: '',
 			},

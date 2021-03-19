@@ -2,7 +2,6 @@ import Producto from '../models/products';
 
 export const createProduct = async (req, res) => {
 	try {
-		console.log(req.body);
 		const {
 			sku,
 			nombre,
@@ -42,18 +41,17 @@ export const createProduct = async (req, res) => {
 		});
 		if (req.file) {
 			const { filename } = req.file;
-			console.log(filename);
+
 			newProducto.setImg(filename);
 		}
 		const productSave = await newProducto.save();
-		res.status(201).json(productSave);
+		res.status(200).json(productSave);
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Valide datos ingresados' });
 	}
 };
 
 export const createProductM = async (req, res) => {
-	console.log(req.body);
 	const {
 		sku,
 		nombre,
@@ -93,7 +91,7 @@ export const createProductM = async (req, res) => {
 	});
 
 	const productSave = await newProducto.save();
-	console.log(req.body);
+
 	res.status(200).json(productSave);
 };
 

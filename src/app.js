@@ -3,8 +3,9 @@ import morgan from 'morgan';
 import cors from 'cors';
 import pkg from '../package.json';
 import ProductsRoute from './routes/products.routes';
-import UsersRoute from './routes/users.route';
+import VentasRoute from './routes/venta.route';
 import AuthRoute from './routes/auth.route';
+import UsersRoute from './routes/users.route';
 import CheckOutRoute from './routes/checkout.route';
 import { createRole, createProduct } from './libs/confInicial';
 import bodyParser from 'body-parser';
@@ -32,6 +33,7 @@ app.get('/:tienda', tienda);
 app.get('/:tienda/productos', productos);
 
 app.use('/api/products', ProductsRoute);
+app.use('/api/ventas', VentasRoute);
 app.use('/api/auth', AuthRoute);
 app.use('/api/user', UsersRoute);
 app.use('/api/checkout', CheckOutRoute);
