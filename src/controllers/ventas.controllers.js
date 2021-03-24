@@ -32,7 +32,7 @@ export const getVentas = async (req, res) => {
 export const createVenta = async (req, res) => {
 	// try {
 	const foundUser = await Users.find({ tienda: { $in: req.params.tienda } });
-	const { montoProductos, mensaje, productos, moneda } = req.body;
+	const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery } = req.body;
 	// console.log(mensaje);
 	// let productosId = [];
 	const mercadoP = foundUser[0].mercadoPago;
@@ -43,6 +43,8 @@ export const createVenta = async (req, res) => {
 		tienda: req.params.tienda,
 		moneda,
 		montoProductos,
+		montoExtra,
+		montoDelivery,
 		productos,
 		estado: 'Pendiente',
 		mercadoPago: '',

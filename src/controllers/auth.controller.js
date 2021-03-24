@@ -13,14 +13,16 @@ export const signIn = async (req, res) => {
 		const matchPassword = await User.comparePassword(req.body.password, userFound.password);
 
 		if (!matchPassword)
-			return res.status(401).json({ token: null, message: 'validar datos ingresados', role: 'vendedor' });
+			return res
+				.status(401)
+				.json({ token: null, message: 'contraseña incorrecta', role: [{ name: 'vendedor' }] });
 
 		const token = jwt.sign({ id: userFound._id }, config.SECRET, {
 			expiresIn: 86400,
 		});
 		let admin = userFound.roles.find((role) => role.name === 'Admin');
-		console.log(admin);
-		res.json({ token, role: userFound.roles });
+		console.log(userFound);
+		res.status(200).json({ token, role: userFound.roles });
 	}
 };
 export const signUp = async (req, res) => {
@@ -72,6 +74,21 @@ export const signUp = async (req, res) => {
 				cierre: 0,
 			},
 		],
+		montoExtra: {
+			descripcion: '',
+			monto: 0,
+		},
+		zonasCompra: [
+			{
+				zona: 'Centro',
+				monto: 0,
+			},
+		],
+		mensajeCompra: {
+			encabezado: 'Gracias por su compra',
+			pie: 'Vuelva pronto',
+		},
+		mensajeWP: 'Su pedido realizado es: ',
 		fuenteH: 'Monserrat',
 		fuenteC: 'Monserrat',
 		fuenteF: 'Monserrat',
@@ -155,7 +172,7 @@ export const signUp = async (req, res) => {
 		expiresIn: 86400,
 	});
 	console.log(savedUser);
-	enviar(email).catch(console.error);
+	// enviar(email).catch(console.error);
 	res.json({ token });
 };
 

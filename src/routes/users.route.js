@@ -9,6 +9,8 @@ router.put('/updateCabecera', verifyToken, upload.single('logo'), userCrt.update
 router.get('/verPreferencias', verifyToken, userCrt.getUserPreferenciasById);
 router.put('/updateModal', verifyToken, upload.single('imodal'), userCrt.updateModalById);
 router.put('/updateHeader', verifyToken, upload.single('logo'), userCrt.updateHeadById);
+router.put('/updateZonas', verifyToken, userCrt.updateZonas);
+router.put('/updateMensajesCompra', verifyToken, userCrt.updateMensajes);
 
 router.put('/updateBody', verifyToken, upload.any('superior'), userCrt.updateCuerpoById);
 router.put('/updateFooter', verifyToken, upload.any('inferior'), userCrt.updateFooterById);

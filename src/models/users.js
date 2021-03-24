@@ -2,32 +2,6 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import bodyParser from 'body-parser';
 
-const preferenciasSchema = new Schema({
-	fuenteH: String,
-	fuenteC: String,
-	fuenteF: String,
-	fColorH: String,
-	fColorC: String,
-	fColorF: String,
-	tColorH: String,
-	tColorC: String,
-	tColorF: String,
-	titulo: String,
-	pie: String,
-	moneda: String,
-	imagenesH: [{ type: String }],
-	imagenesC: [{ type: String }],
-	imagenesF: [{ type: String }],
-	whatsapp: String,
-	LinkExterno: String,
-	GeoTienda: String,
-	montoMin: Number,
-	Variedades: [{ String }],
-	logo: {
-		type: String,
-	},
-});
-
 const userSchema = new Schema(
 	{
 		username: {
@@ -123,11 +97,33 @@ const userSchema = new Schema(
 			textlink: String,
 			GeoTienda: String,
 			Variedades: [{ String }],
-			preguntas: [{ type: String }],
+			preguntas: [
+				{
+					tipo: String,
+					pregunta: String,
+					opciones: [{ type: String }],
+				},
+			],
 			logo: {
 				type: String,
 			},
 			montoMin: Number,
+			montoExtra: {
+				descripcion: String,
+				monto: Number,
+			},
+			zonasCompra: [
+				{
+					zona: String,
+					monto: Number,
+				},
+			],
+
+			mensajeCompra: {
+				encabezado: String,
+				pie: String,
+			},
+			mensajeWP: String,
 		},
 	},
 	{

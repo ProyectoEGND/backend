@@ -20,6 +20,9 @@ const VentaSchema = new Schema(
 		montoExtra: {
 			type: Number,
 		},
+		montoDelivery: {
+			type: Number,
+		},
 
 		productos: [
 			{
@@ -34,7 +37,7 @@ const VentaSchema = new Schema(
 		],
 		mensaje: [
 			{
-				mensaje: String,
+				pregunta: String,
 				respuesta: String,
 			},
 		],

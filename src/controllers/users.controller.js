@@ -22,8 +22,13 @@ export const getUserPreferenciasById = async (req, res) => {
 export const getMercadoPagoById = async (req, res) => {
 	console.log('usuario', req.userId);
 	const user = await Users.findById(req.userId);
-	console.log(user.mercadoPago);
-	res.status(200).json({ mp: user.mercadoPago, minimo: user.preferencias.montoMin });
+	console.log(user.preferencias);
+
+	res.status(200).json({
+		mp: user.mercadoPago,
+		minimo: user.preferencias.montoMin,
+		extra: user.preferencias.montoExtra,
+	});
 };
 
 export const updateUserPreferenciasById = async (req, res) => {
@@ -236,22 +241,63 @@ export const updateUserById = async (req, res) => {
 
 export const updateUserById2 = async (req, res) => {
 	let update;
-	console.log(req.body.montoMin);
-	if (req.body.montoMin) {
+
+	if (req.body.montoMin || req.body.montoMin === 0) {
+		console.log(req.body.montoMin);
+		console.log('monto extra', req.body.montoExtra);
 		const user = await Users.findById(req.userId);
 		let preferencias = user.preferencias;
 		preferencias.montoMin = req.body.montoMin;
+		preferencias.montoExtra = req.body.montoExtra;
 		update = {
 			mercadoPago: req.body.mercadoPago,
 			preferencias,
 		};
 	} else {
+		console.log('controlar salteo');
 		update = req.body;
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(req.userId, update, {
 		new: true,
 	});
+
+	res.status(200).json(userActualizado);
+};
+
+export const updateZonas = async (req, res) => {
+	const user = await Users.findById(req.userId);
+	let preferencias = user.preferencias;
+	let nuevasZonas = [];
+	req.body.zonasCompra.map((zona) => nuevasZonas.push({ zona: zona.zona, monto: zona.monto }));
+	preferencias.zonasCompra = [...nuevasZonas];
+	console.log(preferencias);
+
+	const userActualizado = await Users.findByIdAndUpdate(
+		req.userId,
+		{ preferencias: preferencias },
+		{
+			new: true,
+		}
+	);
+
+	res.status(200).json(userActualizado);
+};
+
+export const updateMensajes = async (req, res) => {
+	const user = await Users.findById(req.userId);
+	let preferencias = user.preferencias;
+	preferencias.mensajeCompra = req.body.mensajeCompra;
+	preferencias.mensajeWP = req.body.mensajeWP;
+	console.log(preferencias);
+
+	const userActualizado = await Users.findByIdAndUpdate(
+		req.userId,
+		{ preferencias: preferencias },
+		{
+			new: true,
+		}
+	);
 
 	res.status(200).json(userActualizado);
 };
@@ -405,6 +451,21 @@ export const createUsers = async (req, res) => {
 				cierre: 0,
 			},
 		],
+		montoExtra: {
+			descripcion: '',
+			monto: 0,
+		},
+		zonasCompra: [
+			{
+				zona: 'Centro',
+				monto: 0,
+			},
+		],
+		mensajeCompra: {
+			encabezado: 'Gracias por su compra',
+			pie: 'Vuelva pronto',
+		},
+		mensajeWP: 'Su pedido realizado es: ',
 		desarrollado,
 		montoMin: 0,
 		fuenteH: 'Monserrat',
