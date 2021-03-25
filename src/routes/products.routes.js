@@ -7,6 +7,7 @@ const router = Router();
 router.post('/', verifyToken, upload.single('img'), productsCrt.createProduct);
 router.post('/masivo', verifyToken, productsCrt.createProductM);
 router.get('/', productsCrt.getProducts);
+router.get('/misproductos', verifyToken, productsCrt.getTienda);
 router.get('/:productId', productsCrt.getProductById);
 router.put('/:productId', verifyToken, productsCrt.updateProductById);
 router.delete('/:productId', verifyToken, productsCrt.deleteProductById);

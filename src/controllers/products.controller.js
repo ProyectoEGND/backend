@@ -44,8 +44,15 @@ export const createProduct = async (req, res) => {
 
 			newProducto.setImg(filename);
 		}
-		const productSave = await newProducto.save();
-		res.status(200).json(productSave);
+		const productsFound = await Producto.find({ tienda: req.tienda });
+		let repetido = productsFound.filter((productos) => productos.sku === sku);
+		console.log(repetido);
+		if (repetido.length > 0) {
+			res.status(401).json({ mensaje: 'El sku del producto ya existe' });
+		} else {
+			const productSave = await newProducto.save();
+			res.status(200).json(productSave);
+		}
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Valide datos ingresados' });
 	}
@@ -114,4 +121,13 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
 	const productoEliminado = await Producto.findByIdAndDelete(req.params.productId);
 	res.status(204).json();
+};
+
+export const getTienda = async (req, res) => {
+	// console.log(req);
+	const foundProducto = await Producto.find({ tienda: { $in: req.tienda } });
+	console.log(foundProducto);
+	res.status(200).json({ productos: foundProducto });
+
+	// res.status(200).json(foundProducto);
 };
