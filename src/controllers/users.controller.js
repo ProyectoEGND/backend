@@ -43,7 +43,7 @@ export const updateHeadById = async (req, res) => {
 	// const { filename } = req.file;
 	// console.log(filename);
 	const user = await Users.findById(req.userId);
-	console.log(req.file);
+
 	let preferencias = user.preferencias;
 
 	preferencias.titulo = req.body.titulo;
@@ -53,7 +53,7 @@ export const updateHeadById = async (req, res) => {
 	preferencias.moneda = req.body.moneda;
 
 	if (req.file) {
-		console.log('validar', 'req.file');
+		console.log('envio imagen');
 		const { filename } = req.file;
 
 		preferencias.logo = `http://186.122.145.218:4000/public/${filename}`;
@@ -241,21 +241,26 @@ export const updateUserById = async (req, res) => {
 
 export const updateUserById2 = async (req, res) => {
 	let update;
-
+	const user = await Users.findById(req.userId);
+	let preferencias = user.preferencias;
 	if (req.body.montoMin || req.body.montoMin === 0) {
 		console.log(req.body.montoMin);
 		console.log('monto extra', req.body.montoExtra);
-		const user = await Users.findById(req.userId);
-		let preferencias = user.preferencias;
+
 		preferencias.montoMin = req.body.montoMin;
 		preferencias.montoExtra = req.body.montoExtra;
 		update = {
 			mercadoPago: req.body.mercadoPago,
 			preferencias,
 		};
+	} else if (req.body.terminos) {
+		preferencias.terminos = req.body.terminos;
+		update = {
+			preferencias,
+		};
 	} else {
-		console.log('controlar salteo');
-		update = req.body;
+		console.log(req.body);
+		// update = { preferencias: req.body };
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(req.userId, update, {
