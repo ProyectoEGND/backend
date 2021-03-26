@@ -41,7 +41,7 @@ export const updateUserPreferenciasById = async (req, res) => {
 export const updateHeadById = async (req, res) => {
 	// console.log(req.body);
 	// const { filename } = req.file;
-	// console.log(filename);
+	// console.log(req.file);
 	const user = await Users.findById(req.userId);
 
 	let preferencias = user.preferencias;
@@ -156,7 +156,7 @@ export const updateFooterById = async (req, res) => {
 	preferencias.textlink = req.body.textlink;
 	preferencias.terminosColor = req.body.terminosColor;
 
-	if (req.files) {
+	if (req.files.length !== 0) {
 		req.files.map((file) => {
 			const { filename } = file;
 
@@ -182,14 +182,14 @@ export const updateCuerpoById = async (req, res) => {
 	const user = await Users.findById(req.userId);
 	let preferencias = user.preferencias;
 	let arraySuperior = [];
-
+	console.log(req.files);
 	preferencias.fuenteC = req.body.fuenteC;
 	preferencias.tColorC = req.body.tColorC;
 	preferencias.fColorC = req.body.fColorC;
 	preferencias.hoverColor = req.body.hoverColor;
 	preferencias.selectColor = req.body.selectColor;
 
-	if (req.files) {
+	if (req.files.length !== 0) {
 		req.files.map((file) => {
 			const { filename } = file;
 
