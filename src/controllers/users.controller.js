@@ -56,7 +56,7 @@ export const updateHeadById = async (req, res) => {
 		console.log('envio imagen');
 		const { filename } = req.file;
 
-		preferencias.logo = `http://186.122.145.218:4000/public/${filename}`;
+		preferencias.logo = `http://localhost:4000/public/${filename}`;
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(
@@ -126,7 +126,7 @@ export const updateModalById = async (req, res) => {
 	if (req.file) {
 		const { filename } = req.file;
 
-		preferencias.imodal = `http://186.122.145.218:4000/public/${filename}`;
+		preferencias.imodal = `http://localhost:4000/public/${filename}`;
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(
@@ -160,7 +160,7 @@ export const updateFooterById = async (req, res) => {
 		req.files.map((file) => {
 			const { filename } = file;
 
-			arraySuperior.push(`http://186.122.145.218:4000/public/${filename}`);
+			arraySuperior.push(`http://localhost:4000/public/${filename}`);
 		});
 		preferencias.imagenesF = arraySuperior;
 	}
@@ -193,7 +193,7 @@ export const updateCuerpoById = async (req, res) => {
 		req.files.map((file) => {
 			const { filename } = file;
 
-			arraySuperior.push(`http://186.122.145.218:4000/public/${filename}`);
+			arraySuperior.push(`http://localhost:4000/public/${filename}`);
 		});
 		preferencias.imagenesH = arraySuperior;
 	}
@@ -242,6 +242,7 @@ export const updateUserById = async (req, res) => {
 export const updateUserById2 = async (req, res) => {
 	let update;
 	const user = await Users.findById(req.userId);
+
 	let preferencias = user.preferencias;
 	if (req.body.montoMin || req.body.montoMin === 0) {
 		console.log(req.body.montoMin);
@@ -258,8 +259,30 @@ export const updateUserById2 = async (req, res) => {
 		update = {
 			preferencias,
 		};
+	} else if (req.body.logo === undefined) {
+		preferencias.logo = req.body.logo;
+		update = {
+			preferencias,
+		};
+	} else if (req.body.imodal === undefined) {
+		preferencias.imodal = req.body.imodal;
+		update = {
+			preferencias,
+		};
+	} else if (req.body.superior !== undefined) {
+		console.log('superior', req.body);
+		preferencias.imagenesH.splice(req.body.superior, 1);
+		update = {
+			preferencias,
+		};
+	} else if (req.body.inferior !== undefined) {
+		console.log('inferior', req.body);
+		preferencias.imagenesF.splice(req.body.inferior, 1);
+		update = {
+			preferencias,
+		};
 	} else {
-		console.log(req.body);
+		console.log('evito', req.body);
 		// update = { preferencias: req.body };
 	}
 
@@ -492,8 +515,8 @@ export const createUsers = async (req, res) => {
 		imagenesF: [],
 		modal: true,
 		tmodal: 'texto de prueba',
-		imodal: 'http://186.122.145.218:4000/public/logo.jpg',
-		logo: 'http://186.122.145.218:4000/public/logo.jpg',
+		imodal: 'http://localhost:4000/public/logo.jpg',
+		logo: 'http://localhost:4000/public/logo.jpg',
 		whatsapp: '#',
 		youtube: '#',
 		facebook: '#',
@@ -605,8 +628,8 @@ async function enviar(email, tienda, username) {
 				<p><b>Usuario: </b> ${username}</p>
 				<p><b>Email: </b> ${email}</p>
 				<p><b>Nombre de tienda: </b> ${tienda}</p>
-				<p><b><a href="http://186.122.145.218:3001/${tienda}">URL de su tienda</a></b></p>
-				<p><b><a href="http://186.122.145.218:3001/personalizar">Personalise su tienda</a></b></p>
+				<p><b><a href="http://localhost:3001/${tienda}">URL de su tienda</a></b></p>
+				<p><b><a href="http://localhost:3001/personalizar">Personalise su tienda</a></b></p>
 			</div>
 		`, // html body
 	});

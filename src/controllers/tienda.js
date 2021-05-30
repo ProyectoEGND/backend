@@ -19,8 +19,8 @@ export const getTienda = async (req, res) => {
 
 export const getProductos = async (req, res) => {
 	const foundProducto = await Producto.find({ tienda: { $in: req.params.tienda } });
-
-	res.status(200).json(foundProducto);
+	const conStock = foundProducto.filter((producto) => producto.stock > 0);
+	res.status(200).json(conStock);
 };
 
 const estadoCerrado = (dias) => {

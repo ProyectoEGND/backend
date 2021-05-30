@@ -22,7 +22,7 @@ export const signIn = async (req, res) => {
 		});
 		let admin = userFound.roles.find((role) => role.name === 'Admin');
 		console.log(userFound);
-		res.status(200).json({ token, role: userFound.roles });
+		res.status(200).json({ token, role: userFound.roles, tienda: userFound.tienda });
 	}
 };
 export const signUp = async (req, res) => {
@@ -109,7 +109,7 @@ export const signUp = async (req, res) => {
 		modal: true,
 		tmodal: 'texto de prueba',
 		imodal: 'null',
-		logo: 'http://186.122.145.218:4000/public/logo.jpg',
+		logo: 'http://localhost:4000/public/logo.jpg',
 		whatsapp: '#',
 		youtube: '#',
 		facebook: '#',
