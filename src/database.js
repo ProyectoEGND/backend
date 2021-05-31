@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 mongoose
-	.connect('mongodb://34.224.5.110/tiendaDb', {
+	.connect('mongodb://localhost/tiendaDb', {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: true,
