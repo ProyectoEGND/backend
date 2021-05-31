@@ -34,7 +34,7 @@ const productoSchema = new Schema(
 );
 
 productoSchema.methods.setImg = function setImg(filename) {
-	this.imgUrl = `http://localhost:4000/public/${filename}`;
+	this.imgUrl = `http://34.224.5.110:4000/public/${filename}`;
 };
 
 export default model('Producto', productoSchema);

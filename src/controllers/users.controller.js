@@ -56,7 +56,7 @@ export const updateHeadById = async (req, res) => {
 		console.log('envio imagen');
 		const { filename } = req.file;
 
-		preferencias.logo = `http://localhost:4000/public/${filename}`;
+		preferencias.logo = `http://34.224.5.110:4000/public/${filename}`;
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(
@@ -126,7 +126,7 @@ export const updateModalById = async (req, res) => {
 	if (req.file) {
 		const { filename } = req.file;
 
-		preferencias.imodal = `http://localhost:4000/public/${filename}`;
+		preferencias.imodal = `http://34.224.5.110:4000/public/${filename}`;
 	}
 
 	const userActualizado = await Users.findByIdAndUpdate(
@@ -160,7 +160,7 @@ export const updateFooterById = async (req, res) => {
 		req.files.map((file) => {
 			const { filename } = file;
 
-			arraySuperior.push(`http://localhost:4000/public/${filename}`);
+			arraySuperior.push(`http://34.224.5.110:4000/public/${filename}`);
 		});
 		preferencias.imagenesF = arraySuperior;
 	}
@@ -193,7 +193,7 @@ export const updateCuerpoById = async (req, res) => {
 		req.files.map((file) => {
 			const { filename } = file;
 
-			arraySuperior.push(`http://localhost:4000/public/${filename}`);
+			arraySuperior.push(`http://34.224.5.110:4000/public/${filename}`);
 		});
 		preferencias.imagenesH = arraySuperior;
 	}
@@ -515,8 +515,8 @@ export const createUsers = async (req, res) => {
 		imagenesF: [],
 		modal: true,
 		tmodal: 'texto de prueba',
-		imodal: 'http://localhost:4000/public/logo.jpg',
-		logo: 'http://localhost:4000/public/logo.jpg',
+		imodal: 'http://34.224.5.110:4000/public/logo.jpg',
+		logo: 'http://34.224.5.110:4000/public/logo.jpg',
 		whatsapp: '#',
 		youtube: '#',
 		facebook: '#',
@@ -628,8 +628,8 @@ async function enviar(email, tienda, username) {
 				<p><b>Usuario: </b> ${username}</p>
 				<p><b>Email: </b> ${email}</p>
 				<p><b>Nombre de tienda: </b> ${tienda}</p>
-				<p><b><a href="http://localhost:3001/${tienda}">URL de su tienda</a></b></p>
-				<p><b><a href="http://localhost:3001/personalizar">Personalise su tienda</a></b></p>
+				<p><b><a href="http://34.224.5.110:3001/${tienda}">URL de su tienda</a></b></p>
+				<p><b><a href="http://34.224.5.110:3001/personalizar">Personalise su tienda</a></b></p>
 			</div>
 		`, // html body
 	});

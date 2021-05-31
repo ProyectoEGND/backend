@@ -26,20 +26,8 @@ export const signIn = async (req, res) => {
 	}
 };
 export const signUp = async (req, res) => {
-	const {
-		username,
-		email,
-		tienda,
-		cuit,
-		celular,
-		password,
-		roles,
-		nombre,
-		estado,
-		padre,
-		redes,
-		desarrollado,
-	} = req.body;
+	const { username, email, tienda, cuit, celular, password, roles, nombre, estado, padre, redes, desarrollado } =
+		req.body;
 	const defaultValue = {
 		desarrollado,
 		estadoTienda: true,
@@ -109,7 +97,7 @@ export const signUp = async (req, res) => {
 		modal: true,
 		tmodal: 'texto de prueba',
 		imodal: 'null',
-		logo: 'http://localhost:4000/public/logo.jpg',
+		logo: 'http://34.224.5.110:4000/public/logo.jpg',
 		whatsapp: '#',
 		youtube: '#',
 		facebook: '#',
