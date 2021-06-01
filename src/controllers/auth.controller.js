@@ -90,7 +90,7 @@ export const signUp = async (req, res) => {
 		tColorF: '#ffffffff',
 		titulo: 'Tienda de prueba',
 		pie: 'Pie de prueba',
-		moneda: 'PESO',
+		moneda: 'PESO ARS - ARGENTINA',
 		imagenesH: [],
 		imagenesC: [],
 		imagenesF: [],
