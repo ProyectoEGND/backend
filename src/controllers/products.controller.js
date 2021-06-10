@@ -142,11 +142,26 @@ export const getProductById = async (req, res) => {
 };
 
 export const updateProductById = async (req, res) => {
+	// console.log('envie', req.body.composicion);
 	try {
 		const productoActualizado = await Producto.findByIdAndUpdate(req.params.productId, req.body, {
 			new: true,
 		});
-		res.status(200).json({ mensaje: 'Producto actualizado' });
+
+		if (req.body.variedades) {
+			productoActualizado.variedades = JSON.parse(req.body.variedades);
+		}
+
+		if (req.file) {
+			console.log('imagen');
+			const { filename } = req.file;
+
+			productoActualizado.setImg(filename);
+		}
+
+		const actualizado = await productoActualizado.save();
+
+		res.status(200).json({ mensaje: 'Producto actualizado correctamente' });
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Error inesperado' });
 	}

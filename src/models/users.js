@@ -85,6 +85,7 @@ const userSchema = new Schema(
 					cierre: Number,
 				},
 			],
+			terminosEstado: Boolean,
 			terminos: String,
 			fuenteH: String,
 			fuenteC: String,
@@ -127,6 +128,8 @@ const userSchema = new Schema(
 				type: String,
 			},
 			montoMin: Number,
+			envioGratuito: 0,
+			envioGratuito: Number,
 			montoExtra: {
 				descripcion: String,
 				monto: Number,

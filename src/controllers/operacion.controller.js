@@ -14,29 +14,30 @@ export const getOperacion = async (req, res) => {
 
 export const createOpearcion = async (req, res) => {
 	try {
-		const { tipo, monto, producto, stock } = req.body;
+		const { tipo, monto, cantidad, producto, stock } = req.body;
 		const newOperacion = new Operaciones({
 			tienda: req.tienda,
 			tipo,
 			monto,
+			cantidad,
 			producto,
 		});
 
-		let cantidad = 0;
+		let stockActualizado = 0;
 
 		switch (tipo) {
 			case 'Incremento':
-				cantidad = stock + monto;
+				stockActualizado = stock + monto;
 				break;
 
 			default:
-				cantidad = stock - monto;
+				stockActualizado = stock - monto;
 				break;
 		}
 
 		const productoActualizado = await Producto.findByIdAndUpdate(
 			producto,
-			{ stock: cantidad },
+			{ stock: stockActualizado },
 			{
 				new: true,
 			}

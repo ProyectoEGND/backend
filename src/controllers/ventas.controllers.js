@@ -80,7 +80,8 @@ const modificarStock = async (productos, tienda) => {
 			const newOperacion = new Operaciones({
 				tienda,
 				tipo: 'Venta',
-				monto: producto.cantidad,
+				cantidad: producto.cantidad,
+				monto: producto.montoProductos,
 			});
 
 			const savedOperacion = await newOperacion.save();

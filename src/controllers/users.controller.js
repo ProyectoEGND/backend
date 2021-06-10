@@ -242,8 +242,16 @@ export const updateUserById = async (req, res) => {
 export const updateUserById2 = async (req, res) => {
 	let update;
 	const user = await Users.findById(req.userId);
+	const estado = req.body.terminosEstado;
 
 	let preferencias = user.preferencias;
+	if (req.body.terminosEstado !== undefined) {
+		preferencias.terminosEstado = req.body.terminosEstado;
+
+		update = {
+			preferencias,
+		};
+	}
 	if (req.body.montoMin || req.body.montoMin === 0) {
 		console.log(req.body.montoMin);
 		console.log('monto extra', req.body.montoExtra);
@@ -256,6 +264,7 @@ export const updateUserById2 = async (req, res) => {
 		};
 	} else if (req.body.terminos) {
 		preferencias.terminos = req.body.terminos;
+
 		update = {
 			preferencias,
 		};
@@ -281,10 +290,18 @@ export const updateUserById2 = async (req, res) => {
 		update = {
 			preferencias,
 		};
+	} else if (estado) {
+		preferencias.terminosEstado = req.body.terminosEstado;
+		console.log('preferencias', preferencias);
+		update = {
+			preferencias,
+		};
 	} else {
 		console.log('evito', req.body);
 		// update = { preferencias: req.body };
 	}
+
+	console.log(update);
 
 	const userActualizado = await Users.findByIdAndUpdate(req.userId, update, {
 		new: true,
@@ -299,6 +316,7 @@ export const updateZonas = async (req, res) => {
 	let nuevasZonas = [];
 	req.body.zonasCompra.map((zona) => nuevasZonas.push({ zona: zona.zona, monto: zona.monto }));
 	preferencias.zonasCompra = [...nuevasZonas];
+	preferencias.envioGratuito = req.body.envioGratuito;
 	console.log(preferencias);
 
 	const userActualizado = await Users.findByIdAndUpdate(
@@ -527,6 +545,7 @@ export const createUsers = async (req, res) => {
 		preguntas: [],
 		GeoTienda:
 			'<iframe src="https://www.google.com/maps/d/embed?mid=1yBH-p8EWCRv1noPnlW9wP8nMp7Q&hl=es" width="640" height="480"></iframe>',
+		terminosEstado: false,
 		terminos:
 			'{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
 	};

@@ -21,7 +21,7 @@ export const signIn = async (req, res) => {
 			expiresIn: 86400,
 		});
 		let admin = userFound.roles.find((role) => role.name === 'Admin');
-		console.log(userFound);
+
 		res.status(200).json({ token, role: userFound.roles, tienda: userFound.tienda });
 	}
 };
@@ -108,12 +108,11 @@ export const signUp = async (req, res) => {
 		terminosColor: '#00ff00',
 		GeoTienda: 'String',
 		preguntas: [],
+		terminosEstado: false,
+		envioGratuito: 0,
 		terminos:
 			'{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
 	};
-
-	console.log(User.encryptPassword(password));
-	console.log(password);
 
 	let d = new Date();
 	const newUser = new User({
@@ -159,7 +158,7 @@ export const signUp = async (req, res) => {
 	const token = jwt.sign({ id: savedUser._id }, config.SECRET, {
 		expiresIn: 86400,
 	});
-	console.log(savedUser);
+
 	// enviar(email).catch(console.error);
 	res.json({ token });
 };
@@ -188,17 +187,17 @@ async function enviar(email) {
 		html: '<b>Hello world?</b>', // html body
 	});
 
-	console.log('Message sent: %s', info.messageId);
+	// console.log('Message sent: %s', info.messageId);
 	// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
 	// Preview only available when sending through an Ethereal account
-	console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+	// console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 	// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
 
 export const verify = async (req, res) => {
 	try {
-		console.log(req.body);
+		// console.log(req.body);
 		const token = req.body.token;
 		if (!token) return res.status(403).json({ message: 'enviar token' });
 		const decoded = jwt.verify(token, config.SECRET);

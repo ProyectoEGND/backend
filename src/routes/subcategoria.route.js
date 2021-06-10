@@ -4,7 +4,8 @@ import { verifyToken } from '../middlewares';
 const router = Router();
 
 router.get('/', verifyToken, subcategoriasCrt.getSubCategorias);
+router.get('/:idCategoria', verifyToken, subcategoriasCrt.getSubCategoriaByCategoria);
+router.put('/:subcategoria', verifyToken, subcategoriasCrt.updateSubCategoriaById);
 router.post('/', verifyToken, subcategoriasCrt.createSubCategoria);
-router.put('/:idCategoria', verifyToken, subcategoriasCrt.updateSubCategoriaById);
 
 export default router;

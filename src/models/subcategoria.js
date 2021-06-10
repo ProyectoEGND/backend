@@ -6,6 +6,10 @@ const subCategoriaSchema = new Schema(
 		tienda: String,
 		descripcion: String,
 		estado: Boolean,
+		categoria: {
+			ref: 'Categoria',
+			type: Schema.Types.ObjectId,
+		},
 	},
 	{
 		versionKey: false,

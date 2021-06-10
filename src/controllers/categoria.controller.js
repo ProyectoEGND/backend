@@ -5,7 +5,7 @@ import Categoria from '../models/categoria';
 export const getCategorias = async (req, res) => {
 	try {
 		const foundCategoria = await Categoria.find({ tienda: { $in: req.tienda }, estado: { $in: true } });
-		await console.log(foundCategoria);
+
 		res.status(200).json(foundCategoria);
 	} catch (error) {
 		res.status(500).json({ ventas: 'Error al recuperar ventas' });
@@ -13,14 +13,12 @@ export const getCategorias = async (req, res) => {
 };
 
 export const createCategoria = async (req, res) => {
-	console.log('categoria', req.body);
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
-		const { nombre, descripcion } = req.body;
+		const { nombre } = req.body;
 		const newCategoria = new Categoria({
 			tienda: req.tienda,
 			nombre,
-			descripcion,
 			estado: true,
 		});
 
@@ -33,7 +31,6 @@ export const createCategoria = async (req, res) => {
 
 export const updateCategoriaById = async (req, res) => {
 	try {
-		console.log('actualizar', req.body);
 		const categoriaActualizada = await Categoria.findByIdAndUpdate(req.params.idCategoria, req.body, {
 			new: true,
 		});

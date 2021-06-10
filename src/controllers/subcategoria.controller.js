@@ -5,8 +5,25 @@ import SubCategoria from '../models/subcategoria';
 export const getSubCategorias = async (req, res) => {
 	try {
 		const foundSubCategoria = await SubCategoria.find({ tienda: { $in: req.tienda }, estado: { $in: true } });
-		await console.log(foundSubCategoria);
+
 		res.status(200).json(foundSubCategoria);
+	} catch (error) {
+		res.status(500).json({ mensaje: 'Error al recuperar subcategorias' });
+	}
+};
+
+export const getSubCategoriaByCategoria = async (req, res) => {
+	try {
+		const foundSubCategoria = await SubCategoria.find({
+			categoria: { $in: req.body.categoria },
+			estado: { $in: true },
+		});
+
+		if (foundSubCategoria.length > 0) {
+			res.status(200).json(foundSubCategoria);
+		} else {
+			res.status(200).json([]);
+		}
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Error al recuperar subcategorias' });
 	}
@@ -15,11 +32,12 @@ export const getSubCategorias = async (req, res) => {
 export const createSubCategoria = async (req, res) => {
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
-		const { nombre, descripcion } = req.body;
+		const { nombre, categoria } = req.body;
+
 		const newSubCategoria = new SubCategoria({
 			tienda: req.tienda,
 			nombre,
-			descripcion,
+			categoria,
 			estado: true,
 		});
 

@@ -9,7 +9,7 @@ router.post('/masivo', verifyToken, productsCrt.createProductM);
 router.get('/', productsCrt.getProducts);
 router.get('/misproductos', verifyToken, productsCrt.getTienda);
 router.get('/:productId', productsCrt.getProductById);
-router.put('/:productId', verifyToken, productsCrt.updateProductById);
+router.put('/:productId', verifyToken, upload.single('img'), productsCrt.updateProductById);
 router.delete('/:productId', verifyToken, productsCrt.deleteProductById);
 
 export default router;

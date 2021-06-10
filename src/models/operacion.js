@@ -4,6 +4,7 @@ const operacionSchema = new Schema(
 	{
 		tipo: String,
 		monto: Number,
+		cantidad: Number,
 		tienda: String,
 		producto: [
 			{
