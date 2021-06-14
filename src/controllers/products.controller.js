@@ -1,5 +1,7 @@
 import Producto from '../models/products';
 import Operaciones from '../models/operacion';
+import Categoria from '../models/categoria';
+import SubCategoria from '../models/subcategoria';
 
 export const createProduct = async (req, res) => {
 	try {
@@ -42,6 +44,7 @@ export const createProduct = async (req, res) => {
 			precio,
 			imgUrl,
 		});
+		console.log('enviado', categoria, subcategoria);
 
 		console.log(req.body);
 
@@ -105,7 +108,7 @@ export const createProductM = async (req, res) => {
 		Composicion,
 		Componentes,
 		stockMinimo,
-		stockInicial: 0,
+		stockInicial: stockInicial ? stockInicial : 0,
 		operaciones: [],
 		descuento,
 		variedades,
@@ -118,10 +121,29 @@ export const createProductM = async (req, res) => {
 	const newOperacion = new Operaciones({
 		tienda: req.tienda,
 		tipo: 'Inicial',
-		monto: stock ? stock : 0,
+		monto: stockInicial ? stockInicial : 0,
 	});
 
 	const savedOperacion = await newOperacion.save();
+
+	if (categoria !== 'Sin categoria') {
+		const foundCategoria = await Categoria.find({
+			tienda: { $in: req.tienda },
+			key: { $in: categoria },
+			estado: { $in: true },
+		});
+
+		newProducto.categoria = foundCategoria.length > 0 ? foundCategoria[0].nombre : 'Sin categoria';
+	}
+
+	if (subcategoria !== 'Sin subCategoria') {
+		const foundSubCategoria = await SubCategoria.find({
+			tienda: { $in: req.tienda },
+			key: { $in: subcategoria },
+			estado: { $in: true },
+		});
+		newProducto.subcategoria = foundSubCategoria.length > 0 ? foundSubCategoria[0].nombre : 'Sin subCategoria';
+	}
 
 	newProducto.stock = newOperacion.monto;
 	newProducto.operaciones.push(newOperacion._id);

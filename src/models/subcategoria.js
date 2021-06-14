@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 const subCategoriaSchema = new Schema(
 	{
+		key: Number,
 		nombre: String,
 		tienda: String,
 		descripcion: String,

@@ -32,17 +32,23 @@ export const getSubCategoriaByCategoria = async (req, res) => {
 export const createSubCategoria = async (req, res) => {
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
+		const foundCategoria = await SubCategoria.find({ tienda: { $in: req.tienda } });
+		// const foundSubCategoria = await SubCategoria.find({
+		// 	categoria: { $in: req.body.categoria },
+		// });
+		const key = foundSubCategoria.length;
 		const { nombre, categoria } = req.body;
 
 		const newSubCategoria = new SubCategoria({
 			tienda: req.tienda,
 			nombre,
+			key: key ? key + 1 : 1,
 			categoria,
 			estado: true,
 		});
 
 		const savedSubCategoria = await newSubCategoria.save();
-		res.status(200).json({ mensaje: 'SubCategoria ingresada correctamente' });
+		res.status(200).json(savedSubCategoria);
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Error al ingresar subcategoria', error });
 	}

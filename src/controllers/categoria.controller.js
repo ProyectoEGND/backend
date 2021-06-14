@@ -15,15 +15,18 @@ export const getCategorias = async (req, res) => {
 export const createCategoria = async (req, res) => {
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
+		const foundCategoria = await Categoria.find({ tienda: { $in: req.tienda } });
+		const key = foundCategoria.length;
 		const { nombre } = req.body;
 		const newCategoria = new Categoria({
 			tienda: req.tienda,
 			nombre,
 			estado: true,
+			key: key ? key + 1 : 1,
 		});
 
-		const savedVenta = await newCategoria.save();
-		res.status(200).json({ mensaje: 'Categoria ingresada correctamente' });
+		const savedCategoria = await newCategoria.save();
+		res.status(200).json(savedCategoria);
 	} catch (error) {
 		res.status(500).json({ mensaje: 'Error al ingresar la venta', error });
 	}
