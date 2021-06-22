@@ -1,6 +1,7 @@
 import { response } from 'express';
 import Users from '../models/users';
 import Producto from '../models/products';
+import Cupon from '../models/vales';
 
 export const getTienda = async (req, res) => {
 	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
@@ -21,6 +22,23 @@ export const getProductos = async (req, res) => {
 	const foundProducto = await Producto.find({ tienda: { $in: req.params.tienda } });
 	const conStock = foundProducto.filter((producto) => producto.stock > 0);
 	res.status(200).json(conStock);
+};
+
+export const getCupon = async (req, res) => {
+	const foundCupones = await Cupon.find({
+		tienda: { $in: req.params.tienda },
+		estado: { $in: true },
+		nombre: { $in: req.body.cupon },
+	});
+
+	if (foundCupones.length > 0) {
+		let descuento = foundCupones[0].descuento / 100;
+		res.status(200).json({ descuento });
+	} else {
+		console.log('cuerpo');
+		console.log(req.body);
+		res.status(200).json({ descuento: 1 });
+	}
 };
 
 const estadoCerrado = (dias) => {

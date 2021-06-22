@@ -14,6 +14,10 @@ const VentaSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		descuento: {
+			type: Number,
+			required: true,
+		},
 		montoProductos: {
 			type: Number,
 		},

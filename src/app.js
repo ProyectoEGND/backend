@@ -13,7 +13,7 @@ import OperacionRoute from './routes/operacion.route';
 import CheckOutRoute from './routes/checkout.route';
 import { createRole, createProduct } from './libs/confInicial';
 import bodyParser from 'body-parser';
-import { getTienda as tienda, getProductos as productos } from './controllers/tienda';
+import { getTienda as tienda, getProductos as productos, getCupon as cupon } from './controllers/tienda';
 const app = express();
 createRole();
 // createProduct();
@@ -35,6 +35,7 @@ app.get('/', (req, res) => {
 
 app.get('/:tienda', tienda);
 app.get('/:tienda/productos', productos);
+app.post('/:tienda/cupones', cupon);
 
 app.use('/api/products', ProductsRoute);
 app.use('/api/categoria', CategoriaRoute);

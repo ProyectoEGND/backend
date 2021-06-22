@@ -14,11 +14,13 @@ export const getVales = async (req, res) => {
 export const createVale = async (req, res) => {
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
-		const { nombre, descripcion } = req.body;
+		const { nombre, descripcion, descuento } = req.body;
+		console.log(req.body);
 		const newVale = new Vale({
 			tienda: req.tienda,
 			nombre,
 			descripcion,
+			descuento,
 			estado: true,
 		});
 

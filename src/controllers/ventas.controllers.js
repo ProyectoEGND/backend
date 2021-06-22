@@ -33,41 +33,42 @@ export const getVentas = async (req, res) => {
 };
 
 export const createVenta = async (req, res) => {
-	try {
-		const foundUser = await Users.find({ tienda: { $in: req.params.tienda } });
-		const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery } = req.body;
-		// console.log(mensaje);
-		// let productosId = [];
-		const mercadoP = foundUser[0].mercadoPago;
-		// console.log(mercadoP);
-		// productos.map((producto) => productosId.push(producto.id));
-		const newVenta = new Ventas({
-			idTienda: foundUser[0]._id,
-			tienda: req.params.tienda,
-			moneda,
-			montoProductos,
-			montoExtra,
-			montoDelivery,
-			productos,
-			estado: 'Pendiente',
-			mercadoPago: '',
-			mensaje,
-		});
-		if (mercadoP.activo === true) {
-			let aux = await pagos(mercadoP.accessToken, productos);
-			console.log('mp', aux);
-			newVenta.mercadoPago = aux;
-		}
-
-		const estado = await modificarStock(productos, req.params.tienda);
-
-		console.log(estado);
-
-		const savedVenta = await newVenta.save();
-		res.status(200).json({ mensaje: 'Venta ingresada correctamente', mp: savedVenta.mercadoPago });
-	} catch (error) {
-		res.status(500).json({ mensaje: 'Error al ingresar la venta', error });
+	// try {
+	const foundUser = await Users.find({ tienda: { $in: req.params.tienda } });
+	const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery } = req.body;
+	console.log(req.body);
+	// let productosId = [];
+	const mercadoP = foundUser[0].mercadoPago;
+	// console.log(mercadoP);
+	// productos.map((producto) => productosId.push(producto.id));
+	const newVenta = new Ventas({
+		idTienda: foundUser[0]._id,
+		tienda: req.params.tienda,
+		moneda,
+		descuento: req.body.descuento === 1 ? 0 : req.body.descuento,
+		montoProductos,
+		montoExtra,
+		montoDelivery,
+		productos,
+		estado: 'Pendiente',
+		mercadoPago: '',
+		mensaje,
+	});
+	if (mercadoP.activo === true) {
+		let aux = await pagos(mercadoP.accessToken, productos);
+		console.log('mp', aux);
+		newVenta.mercadoPago = aux;
 	}
+
+	const estado = await modificarStock(productos, req.params.tienda);
+
+	console.log(estado);
+
+	const savedVenta = await newVenta.save();
+	res.status(200).json({ mensaje: 'Venta ingresada correctamente', mp: savedVenta.mercadoPago });
+	// } catch (error) {
+	// 	res.status(500).json({ mensaje: 'Error al ingresar la venta', error });
+	// }
 };
 
 const modificarStock = async (productos, tienda) => {
