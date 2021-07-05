@@ -37,6 +37,9 @@ const VentaSchema = new Schema(
 				nombre: String,
 				precio: Number,
 				sku: String,
+				compuesto: Boolean,
+				variedades: [{ cantidad: Number, nombre: String, id: String }],
+				pedidos: [[{ cantidad: Number, nombre: String, id: String }]],
 			},
 		],
 		mensaje: [

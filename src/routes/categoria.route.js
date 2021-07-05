@@ -4,6 +4,7 @@ import { verifyToken } from '../middlewares';
 const router = Router();
 
 router.get('/', verifyToken, categoriasCrt.getCategorias);
+router.get('/:idCategoria', categoriasCrt.publicGetCategorias);
 router.post('/', verifyToken, categoriasCrt.createCategoria);
 router.put('/:idCategoria', verifyToken, categoriasCrt.updateCategoriaById);
 

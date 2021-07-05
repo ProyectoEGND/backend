@@ -99,6 +99,8 @@ const modificarStock = async (productos, tienda) => {
 				}
 			);
 
+			modificarStock(producto.variedades, tienda);
+
 			return { stock, operaciones, productoActualizado };
 		})
 	);

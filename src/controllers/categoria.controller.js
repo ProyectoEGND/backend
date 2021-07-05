@@ -12,15 +12,26 @@ export const getCategorias = async (req, res) => {
 	}
 };
 
+export const publicGetCategorias = async (req, res) => {
+	try {
+		const foundCategoria = await Categoria.find({ tienda: { $in: req.params.idCategoria }, estado: { $in: true } });
+
+		res.status(200).json(foundCategoria);
+	} catch (error) {
+		res.status(500).json({ ventas: 'Error al recuperar ventas' });
+	}
+};
+
 export const createCategoria = async (req, res) => {
 	try {
 		const foundUser = await Users.find({ tienda: { $in: req.tienda } });
 		const foundCategoria = await Categoria.find({ tienda: { $in: req.tienda } });
 		const key = foundCategoria.length;
-		const { nombre } = req.body;
+		const { nombre, orden } = req.body;
 		const newCategoria = new Categoria({
 			tienda: req.tienda,
 			nombre,
+			orden,
 			estado: true,
 			key: key ? key + 1 : 1,
 		});
