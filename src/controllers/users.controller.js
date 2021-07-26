@@ -247,7 +247,7 @@ export const updateUserById2 = async (req, res) => {
   let update;
   const user = await Users.findById(req.userId);
   const estado = req.body.terminosEstado;
-
+  console.log(req.body.superior);
   let preferencias = user.preferencias;
   if (req.body.terminosEstado !== undefined) {
     preferencias.terminosEstado = req.body.terminosEstado;
@@ -272,12 +272,12 @@ export const updateUserById2 = async (req, res) => {
     update = {
       preferencias,
     };
-  } else if (req.body.logo === undefined) {
+  } else if (req.body.logo !== undefined) {
     preferencias.logo = req.body.logo;
     update = {
       preferencias,
     };
-  } else if (req.body.imodal === undefined) {
+  } else if (req.body.imodal !== undefined) {
     preferencias.imodal = req.body.imodal;
     update = {
       preferencias,
@@ -285,6 +285,8 @@ export const updateUserById2 = async (req, res) => {
   } else if (req.body.superior !== undefined) {
     console.log("superior", req.body);
     preferencias.imagenesH.splice(req.body.superior, 1);
+
+    console.log("prefencias=>", preferencias.imagenesH);
     update = {
       preferencias,
     };
@@ -305,7 +307,7 @@ export const updateUserById2 = async (req, res) => {
     // update = { preferencias: req.body };
   }
 
-  console.log(update);
+  console.log("actualizar=>", update);
 
   const userActualizado = await Users.findByIdAndUpdate(req.userId, update, {
     new: true,
@@ -418,7 +420,7 @@ export const usuarioContenidos = async (req, res) => {
 
       res.json(user);
     }
-  );
+  ).populate("roles");
 };
 
 export const revendedores = async (req, res) => {
