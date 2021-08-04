@@ -26,6 +26,7 @@ const productoSchema = new Schema(
     maxVar: Number,
     precio: Number,
     imgUrl: String,
+    stockMinimo: Number,
   },
   {
     timestamps: true,
