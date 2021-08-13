@@ -404,10 +404,10 @@ export const pertenecen = async (req, res) => {
       if (err) {
         res.send(err);
       }
-
+      console.log("usuario", user);
       res.json(user);
     }
-  );
+  ).populate("roles");
 };
 
 export const usuarioContenidos = async (req, res) => {
@@ -425,7 +425,7 @@ export const usuarioContenidos = async (req, res) => {
 
 export const revendedores = async (req, res) => {
   const userFound = await Users.find(
-    { roles: "5fcb8124b424572820441a01" },
+    { roles: "ReVendedores" },
     function (err, user) {
       if (err) {
         res.send(err);
