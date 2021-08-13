@@ -404,7 +404,6 @@ export const pertenecen = async (req, res) => {
       if (err) {
         res.send(err);
       }
-      console.log("usuario", user);
       res.json(user);
     }
   ).populate("roles");
