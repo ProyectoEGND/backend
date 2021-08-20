@@ -77,6 +77,7 @@ const userSchema = new Schema(
     // preferencias: preferenciasSchema,
     preferencias: {
       desarrollado: String,
+      alta:Date,
       estadoTienda: Boolean,
       mensajeCerrado: String,
       horario: [

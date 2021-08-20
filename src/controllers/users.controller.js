@@ -243,6 +243,7 @@ export const updateUserById = async (req, res) => {
   res.status(200).json(userActualizado);
 };
 
+
 export const updateUserById2 = async (req, res) => {
   let update;
   const user = await Users.findById(req.userId);
@@ -612,6 +613,7 @@ export const createUsers = async (req, res) => {
         accessToken: "",
       },
       licencia: d.setDate(d.getDate() + 30),
+      alta:d.getDate(),
       password: await Users.encryptPassword(password),
     });
 
