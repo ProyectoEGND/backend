@@ -55,7 +55,6 @@ export const createProduct = async (req, res) => {
 		});
 
 		newProducto.stock = newOperacion.monto;
-		const savedOperacion = await newOperacion.save();
 		newProducto.operaciones.push(newOperacion._id);
 
 		if (req.file) {
@@ -65,11 +64,11 @@ export const createProduct = async (req, res) => {
 		}
 		const productsFound = await Producto.find({ tienda: req.tienda });
 		let repetido = productsFound.filter((productos) => productos.sku === sku);
-		console.log(repetido);
 		if (repetido.length > 0) {
 			res.status(401).json({ mensaje: 'El sku del producto ya existe' });
 		} else {
 			const productSave = await newProducto.save();
+			const savedOperacion = await newOperacion.save();
 			res.status(200).json(productSave);
 		}
 	} catch (error) {
@@ -124,7 +123,7 @@ export const createProductM = async (req, res) => {
 		monto: stockInicial ? stockInicial : 0,
 	});
 
-	const savedOperacion = await newOperacion.save();
+	
 
 	if (categoria !== 'Sin categoria') {
 		const foundCategoria = await Categoria.find({
@@ -147,10 +146,16 @@ export const createProductM = async (req, res) => {
 
 	newProducto.stock = newOperacion.monto;
 	newProducto.operaciones.push(newOperacion._id);
+	let repetido = productsFound.filter((productos) => productos.sku === sku);
+		if (repetido.length > 0) {
+			res.status(401).json({ mensaje: 'El sku del producto ya existe' });
+		} else {
+			const productSave = await newProducto.save();
+			const savedOperacion = await newOperacion.save();
+			res.status(200).json(productSave);
+		}
 
-	const productSave = await newProducto.save();
-
-	res.status(200).json(productSave);
+	
 };
 
 export const getProducts = async (req, res) => {
