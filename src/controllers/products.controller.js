@@ -146,6 +146,7 @@ export const createProductM = async (req, res) => {
 
 	newProducto.stock = newOperacion.monto;
 	newProducto.operaciones.push(newOperacion._id);
+	const productsFound = await Producto.find({ tienda: req.tienda });
 	let repetido = productsFound.filter((productos) => productos.sku === sku);
 		if (repetido.length > 0) {
 			res.status(401).json({ mensaje: 'El sku del producto ya existe' });
