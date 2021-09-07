@@ -35,10 +35,11 @@ export const getVentas = async (req, res) => {
 export const createVenta = async (req, res) => {
 	// try {
 	const foundUser = await Users.find({ tienda: { $in: req.params.tienda } });
-	const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery } = req.body;
+	const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery,descuento } = req.body;
 	console.log(req.body);
 	// let productosId = [];
 	const mercadoP = foundUser[0].mercadoPago;
+	const stripe = foundUser[0].stripe;
 	// console.log(mercadoP);
 	// productos.map((producto) => productosId.push(producto.id));
 	const newVenta = new Ventas({
@@ -52,6 +53,7 @@ export const createVenta = async (req, res) => {
 		productos,
 		estado: 'Pendiente',
 		mercadoPago: '',
+		stripe:'',
 		mensaje,
 	});
 	if (mercadoP.activo === true) {
@@ -60,12 +62,21 @@ export const createVenta = async (req, res) => {
 		newVenta.mercadoPago = aux;
 	}
 
+	let total=0;
+	productos.map(producto=>total=total+producto.precio*producto.cantidad)
+
+	if (stripe.activo === true) {
+		let urlStripe = await pagosStripe((total+montoExtra+montoDelivery-descuento),stripe.accessToken,moneda);
+		console.log('stripe', urlStripe);
+		newVenta.stripe = urlStripe;
+	}
+
 	const estado = await modificarStock(productos, req.params.tienda);
 
 	console.log(estado);
 
 	const savedVenta = await newVenta.save();
-	res.status(200).json({ mensaje: 'Venta ingresada correctamente', mp: savedVenta.mercadoPago });
+	res.status(200).json({ mensaje: 'Venta ingresada correctamente', mp: savedVenta.mercadoPago,sp:savedVenta.stripe });
 	// } catch (error) {
 	// 	res.status(500).json({ mensaje: 'Error al ingresar la venta', error });
 	// }
@@ -111,7 +122,6 @@ const modificarStock = async (productos, tienda) => {
 };
 
 const pagos = async (access_token, productos) => {
-	console.log('ingreso');
 	mercadopago.configure({
 		access_token,
 	});
@@ -138,3 +148,47 @@ const pagos = async (access_token, productos) => {
 		});
 	return resultado;
 };
+
+
+const pagosStripe=async (monto,privateKey,moneda) => {
+	const monedaOpciones = [
+		{ moneda: 'PESO ARS - ARGENTINA', simbolo: '$',currency:"ars" },
+		{ moneda: 'DOLAR', simbolo: 'US$',currency:'usd'},
+		{ moneda: 'Euro', simbolo: '€',currency:'eur'},
+		{ moneda: 'PESO CLP - CHILE', simbolo: '$',currency:'clp'},
+		{ moneda: 'SOL - PERU', simbolo: 'S/.',currency:'pen'},
+		{ moneda: 'SUCRE - ECUADOR', simbolo: 'S/.',currency:'cop'},
+		{ moneda: 'PESO COP - COLOMBIA', simbolo: '$',currency:'cop'},
+		{ moneda: 'PESO UYU - URUGUAY', simbolo: '$',currency:'uyu'},
+		{ moneda: 'GUARANI - PARAGUAY', simbolo: '₲',currency:'pyg'},
+		{ moneda: 'BOLIVIANO - BOLIVIA', simbolo: 'Bs',currency:'bob'},
+		{ moneda: 'PESO MXN - MEXICO', simbolo: '$',currency:'mxn'},
+		{ moneda: 'COLON - COSTA RICA', simbolo: '₡',currency:'crc'},
+		{ moneda: 'BALBOA - PANAMA', simbolo: 'B/.',currency:'pab'}
+	]
+
+	let diviza=monedaOpciones.filter(monedaOpcion => monedaOpcion.moneda === moneda)
+	diviza=diviza[0];
+		const stripe = require('stripe')(privateKey);
+		const session = await stripe.checkout.sessions.create({				
+		  line_items: [{
+			price_data: {
+			  currency: diviza.currency,
+			  product_data: {
+				name: 'Compra realizada',
+			  },
+			  unit_amount: monto,
+			},
+			quantity: 1,
+		  }],
+		  payment_method_types: [
+			'card',
+		  ],
+		  success_url: `http://localhost:3000/checkout?success=true`,
+    	  cancel_url: `http://localhost:3000/checkout?canceled=true`,
+		  mode: 'payment'
+		});
+		 return session.url;
+	  };
+
+	

@@ -95,6 +95,8 @@ export const createProductM = async (req, res) => {
 		maxVar,
 		imgUrl,
 	} = req.body;
+	try {
+	
 	const newProducto = Producto({
 		sku,
 		nombre,
@@ -155,6 +157,9 @@ export const createProductM = async (req, res) => {
 			const savedOperacion = await newOperacion.save();
 			res.status(200).json(productSave);
 		}
+	} catch (error) {
+		res.status(500).json({message:"Error inesperado"})	
+	}	
 
 	
 };

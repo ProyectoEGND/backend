@@ -72,6 +72,11 @@ const userSchema = new Schema(
       porcentaje: Number,
       accessToken: String,
     },
+    stripe: {
+      activo: Boolean,
+      porcentaje: Number,
+      accessToken: String,
+    },
 
     // preferencias: [{ type: String, required: false }],
     // preferencias: preferenciasSchema,

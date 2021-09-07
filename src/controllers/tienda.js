@@ -20,7 +20,7 @@ export const getTienda = async (req, res) => {
 
 export const getProductos = async (req, res) => {
 	const foundProducto = await Producto.find({ tienda: { $in: req.params.tienda } });
-	const conStock = foundProducto.filter((producto) => producto.stock > 0);
+	const conStock = foundProducto.filter((producto) => producto.stock > 0 && producto.estado === true);
 	res.status(200).json(conStock);
 };
 

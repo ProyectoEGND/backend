@@ -20,16 +20,17 @@ export const getUserPreferenciasById = async (req, res) => {
 };
 
 export const getMercadoPagoById = async (req, res) => {
-  console.log("usuario", req.userId);
   const user = await Users.findById(req.userId);
   console.log(user.preferencias);
 
   res.status(200).json({
     mp: user.mercadoPago,
+    sp:user.stripe,
     minimo: user.preferencias.montoMin,
     extra: user.preferencias.montoExtra,
   });
 };
+
 
 export const updateUserPreferenciasById = async (req, res) => {
   // const user = await Users.findById(req.params.userId);
@@ -265,6 +266,7 @@ export const updateUserById2 = async (req, res) => {
     preferencias.montoExtra = req.body.montoExtra;
     update = {
       mercadoPago: req.body.mercadoPago,
+      stripe: req.body.stripe,
       preferencias,
     };
   } else if (req.body.terminos) {
@@ -609,6 +611,10 @@ export const createUsers = async (req, res) => {
       padre: req.padre,
       preferencias: defaultValue,
       mercadoPago: {
+        activo: false,
+        accessToken: "",
+      },
+      stripe: {
         activo: false,
         accessToken: "",
       },

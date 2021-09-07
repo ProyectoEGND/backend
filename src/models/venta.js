@@ -49,6 +49,7 @@ const VentaSchema = new Schema(
 			},
 		],
 		mercadoPago: String,
+		stripe: String,
 
 		estado: {
 			type: String,
