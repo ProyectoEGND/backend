@@ -177,7 +177,7 @@ const pagosStripe=async (monto,privateKey,moneda) => {
 			  product_data: {
 				name: 'Compra realizada',
 			  },
-			  unit_amount: monto,
+			  unit_amount: monto * 100,
 			},
 			quantity: 1,
 		  }],
