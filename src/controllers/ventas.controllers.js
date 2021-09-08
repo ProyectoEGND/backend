@@ -35,7 +35,7 @@ export const getVentas = async (req, res) => {
 export const createVenta = async (req, res) => {
 	// try {
 	const foundUser = await Users.find({ tienda: { $in: req.params.tienda } });
-	const { montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery,descuento } = req.body;
+	const { montoTotal,montoProductos, mensaje, productos, moneda, montoExtra, montoDelivery,descuento } = req.body;
 	console.log(req.body);
 	// let productosId = [];
 	const mercadoP = foundUser[0].mercadoPago;
@@ -66,7 +66,7 @@ export const createVenta = async (req, res) => {
 	productos.map(producto=>total=total+producto.precio*producto.cantidad)
 
 	if (stripe.activo === true) {
-		let urlStripe = await pagosStripe((total+montoExtra+montoDelivery-descuento),stripe.accessToken,moneda);
+		let urlStripe = await pagosStripe((montoTotal),stripe.accessToken,moneda);
 		console.log('stripe', urlStripe);
 		newVenta.stripe = urlStripe;
 	}
