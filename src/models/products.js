@@ -5,6 +5,7 @@ const productoSchema = new Schema(
     sku: { type: String, required: true,unique: true, },
     tienda: String,
     estado: Boolean,
+    activo: Boolean,
     nombre: { type: String, required: true },
     categoria: String,
     subcategoria: String,
@@ -35,7 +36,7 @@ const productoSchema = new Schema(
 );
 
 productoSchema.methods.setImg = function setImg(filename) {
-  this.imgUrl = `http://18.222.252.2:4000/public/${filename}`;
+  this.imgUrl = `http://18.218.25.115:4000/public/${filename}`;
 };
 
 export default model("Producto", productoSchema);

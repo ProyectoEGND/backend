@@ -118,7 +118,7 @@ export const signUp = async (req, res) => {
     modal: true,
     tmodal: "texto de prueba",
     imodal: "null",
-    logo: "http://18.222.252.2:4000/public/logo.jpg",
+    logo: "http://18.218.25.115:4000/public/logo.jpg",
     whatsapp: "#",
     youtube: "#",
     facebook: "#",

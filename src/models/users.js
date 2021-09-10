@@ -166,13 +166,13 @@ userSchema.statics.encryptPassword = async (password) => {
 };
 
 userSchema.methods.setImgH = function setImgH(filename) {
-  this.imgUrl = `http://18.222.252.2:4000/public/${filename}`;
+  this.imgUrl = `http://18.218.25.115:4000/public/${filename}`;
 };
 userSchema.methods.setImgC = function setImgC(filename) {
-  this.imgUrl = `http://18.222.252.2:4000/public/${filename}`;
+  this.imgUrl = `http://18.218.25.115:4000/public/${filename}`;
 };
 userSchema.methods.setImgF = function setImgF(filename) {
-  this.imgUrl = `http://18.222.252.2:4000/public/${filename}`;
+  this.imgUrl = `http://18.218.25.115:4000/public/${filename}`;
 };
 
 userSchema.statics.comparePassword = async (password, receivedPassword) => {
@@ -182,10 +182,10 @@ userSchema.statics.comparePassword = async (password, receivedPassword) => {
 userSchema.methods.setSup = function setImg(superior) {
   let imagenes = [];
   superior.map((sup) =>
-    imagenes.push(`http://18.222.252.2:4000/public/${sup.filename}`)
+    imagenes.push(`http://18.218.25.115:4000/public/${sup.filename}`)
   );
   console.log(superior);
-  // this.imgUrl = `http://18.222.252.2:4000/public/${filename}`;
+  // this.imgUrl = `http://18.218.25.115:4000/public/${filename}`;
 };
 
 export default model("User", userSchema);

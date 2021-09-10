@@ -184,8 +184,8 @@ const pagosStripe=async (monto,privateKey,moneda) => {
 		  payment_method_types: [
 			'card',
 		  ],
-		  success_url: `http://18.222.252.2:3000/checkout?success=true`,
-    	  cancel_url: `http://18.222.252.2:3000/checkout?canceled=true`,
+		  success_url: `http://18.218.25.115:3000/checkout?success=true`,
+    	  cancel_url: `http://18.218.25.115:3000/checkout?canceled=true`,
 		  mode: 'payment'
 		});
 		 return session.url;

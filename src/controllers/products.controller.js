@@ -22,6 +22,7 @@ export const createProduct = async (req, res) => {
 			minVar,
 			maxVar,
 			imgUrl,
+			activo
 		} = req.body;
 		const newProducto = Producto({
 			sku,
@@ -43,6 +44,7 @@ export const createProduct = async (req, res) => {
 			maxVar,
 			precio,
 			imgUrl,
+			activo
 		});
 		console.log('enviado', categoria, subcategoria);
 
@@ -94,6 +96,7 @@ export const createProductM = async (req, res) => {
 		minVar,
 		maxVar,
 		imgUrl,
+		activo
 	} = req.body;
 	try {
 	
@@ -117,6 +120,7 @@ export const createProductM = async (req, res) => {
 		maxVar,
 		imgUrl,
 		descripcion,
+		activo
 	});
 
 	const newOperacion = new Operaciones({
