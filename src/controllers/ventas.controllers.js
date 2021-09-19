@@ -61,12 +61,10 @@ export const createVenta = async (req, res) => {
 		console.log('mp', aux);
 		newVenta.mercadoPago = aux;
 	}
-
-	let total=0;
-	productos.map(producto=>total=total+producto.precio*producto.cantidad)
+	const aPagar=montoTotal+montoDelivery+montoExtra+stripe.porcentaje
 
 	if (stripe.activo === true) {
-		let urlStripe = await pagosStripe((montoTotal),stripe.accessToken,moneda);
+		let urlStripe = await pagosStripe((Apagar),stripe.accessToken,moneda);
 		console.log('stripe', urlStripe);
 		newVenta.stripe = urlStripe;
 	}
