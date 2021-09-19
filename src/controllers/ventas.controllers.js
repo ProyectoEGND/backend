@@ -64,7 +64,7 @@ export const createVenta = async (req, res) => {
 	const aPagar=montoTotal+montoDelivery+montoExtra+stripe.porcentaje
 
 	if (stripe.activo === true) {
-		let urlStripe = await pagosStripe((Apagar),stripe.accessToken,moneda);
+		let urlStripe = await pagosStripe((aPagar),stripe.accessToken,moneda);
 		console.log('stripe', urlStripe);
 		newVenta.stripe = urlStripe;
 	}
