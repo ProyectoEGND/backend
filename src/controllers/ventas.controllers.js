@@ -61,10 +61,10 @@ export const createVenta = async (req, res) => {
 		console.log('mp', aux);
 		newVenta.mercadoPago = aux;
 	}
-	const aPagar=montoTotal+montoDelivery+montoExtra+stripe.porcentaje
+	const aPagar=montoTotal+montoDelivery+montoExtra
 
 	if (stripe.activo === true) {
-		let urlStripe = await pagosStripe((aPagar),stripe.accessToken,moneda);
+		let urlStripe = await pagosStripe((aPagar),stripe.accessToken,moneda,stripe.porcentaje);
 		console.log('stripe', urlStripe);
 		newVenta.stripe = urlStripe;
 	}
@@ -148,7 +148,7 @@ const pagos = async (access_token, productos) => {
 };
 
 
-const pagosStripe=async (monto,privateKey,moneda) => {
+const pagosStripe=async (monto,privateKey,moneda,costo) => {
 	const monedaOpciones = [
 		{ moneda: 'PESO ARS - ARGENTINA', simbolo: '$',currency:"ars" },
 		{ moneda: 'DOLAR', simbolo: 'US$',currency:'usd'},
@@ -178,7 +178,18 @@ const pagosStripe=async (monto,privateKey,moneda) => {
 			  unit_amount: monto * 100,
 			},
 			quantity: 1,
-		  }],
+		  },
+		  {
+			price_data: {
+			  currency: diviza.currency,
+			  product_data: {
+				name: 'Monto extra por medio de pago electronico',
+			  },
+			  unit_amount: costo * 100,
+			},
+			quantity: 1,
+		  }
+		],
 		  payment_method_types: [
 			'card',
 		  ],
