@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 const productoSchema = new Schema(
   {
-    sku: { type: String, required: true,unique: true, },
+    sku: { type: String, required: true },
     tienda: String,
     estado: Boolean,
     activo: Boolean,
