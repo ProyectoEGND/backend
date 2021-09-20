@@ -120,7 +120,7 @@ export const createProductM = async (req, res) => {
 		maxVar,
 		imgUrl,
 		descripcion,
-		activo:activo === 'SI' ? true : false
+		activo:activo === 'NO' ? true : false
 	});
 
 	const newOperacion = new Operaciones({
