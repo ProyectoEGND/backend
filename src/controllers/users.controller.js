@@ -400,6 +400,18 @@ export const desactivar = async (req, res) => {
   res.status(204).json(userActualizado);
 };
 
+export const activar = async (req, res) => {
+  var newvalues = { $set: { estado: "Activo" } };
+  const userActualizado = await Users.findByIdAndUpdate(
+    req.params.userId,
+    newvalues,
+    {
+      new: true,
+    }
+  );
+  res.status(204).json(userActualizado);
+};
+
 export const pertenecen = async (req, res) => {
   const userFound = await Users.find(
     { padre: req.body.padre },

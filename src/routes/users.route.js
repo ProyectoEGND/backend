@@ -31,6 +31,7 @@ router.put('/:userId', userCrt.updateUserById);
 // router.put('/updateFooter', verifyToken, upload.any('inferior'), userCrt.updateFooterById);
 router.delete('/:userId', userCrt.deleteUserById);
 router.post('/desactivar/:userId', userCrt.desactivar);
+router.post('/activar/:userId', userCrt.activar);
 router.post('/pertenecen', userCrt.pertenecen);
 router.post('/topten', verifyToken, userCrt.topten);
 router.post('/vencimiento', userCrt.vencimiento);
