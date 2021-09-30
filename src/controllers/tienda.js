@@ -5,8 +5,7 @@ import Cupon from '../models/vales';
 
 export const getTienda = async (req, res) => {
 	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
-
-	if (foundPreference.length == 0) {
+	if (foundPreference.length == 0 || foundPreference[0].estado === 'Inactivo') {
 		res.status(404).json({ tienda: 'inexistente' });
 	} else {
 		let preferencias = foundPreference[0].preferencias;
