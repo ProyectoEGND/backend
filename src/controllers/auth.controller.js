@@ -7,7 +7,7 @@ export const signIn = async (req, res) => {
   let email = req.body.email.toLowerCase();
 
   const userFound = await User.findOne({ email: email }).populate("roles");
-  if (!userFound) {
+  if (!userFound || userFound.activo === 'Inactivo') {
     res.status(400).json({ message: "user not found", role: ["vendedor"] });
   } else {
     const matchPassword = await User.comparePassword(

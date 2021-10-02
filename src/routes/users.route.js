@@ -21,8 +21,10 @@ router.get('/', userCrt.getUsers);
 router.get('/:userId', userCrt.getUserById);
 router.get('/preferencia', userCrt.getUsers);
 router.post('/reasigna', userCrt.reasignarUserById);
+router.post('/renovar', userCrt.reasignarUserById);
 
 router.put('/masivo/:userId', userCrt.updateUserByIdImg);
+router.put('/renovar/:userId', userCrt.renovar);
 router.put('/redes', verifyToken, userCrt.updateRedes);
 router.put('/horarios', verifyToken, userCrt.updateHorarioById);
 router.put('/:userId', userCrt.updateUserById);
@@ -31,6 +33,7 @@ router.put('/:userId', userCrt.updateUserById);
 // router.put('/updateFooter', verifyToken, upload.any('inferior'), userCrt.updateFooterById);
 router.delete('/:userId', userCrt.deleteUserById);
 router.post('/desactivar/:userId', userCrt.desactivar);
+router.post('/renovar/:userId', userCrt.renovar);
 router.post('/activar/:userId', userCrt.activar);
 router.post('/pertenecen', userCrt.pertenecen);
 router.post('/topten', verifyToken, userCrt.topten);

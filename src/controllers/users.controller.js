@@ -412,6 +412,20 @@ export const activar = async (req, res) => {
   res.status(204).json(userActualizado);
 };
 
+export const renovar = async (req, res) => {
+  let d = new Date();
+  const userFound = await Users.findByIdAndDelete(req.params.userId);
+  var newvalues = { $set: { licencia: d.setDate(userFund.licencia + 30), } };
+  const userActualizado = await Users.findByIdAndUpdate(
+    req.params.userId,
+    newvalues,
+    {
+      new: true,
+    }
+  );
+  res.status(204).json(userActualizado);
+};
+
 export const pertenecen = async (req, res) => {
   const userFound = await Users.find(
     { padre: req.body.padre },
