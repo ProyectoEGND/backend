@@ -5,9 +5,9 @@ import config from "../config";
 import nodemailer from "nodemailer";
 export const signIn = async (req, res) => {
   let email = req.body.email.toLowerCase();
-
   const userFound = await User.findOne({ email: email }).populate("roles");
-  if (!userFound || userFound.activo === 'Inactivo') {
+  console.log('inactivo',userFound)
+  if (!userFound || userFound.estado === 'Inactivo') {
     res.status(400).json({ message: "user not found", role: ["vendedor"] });
   } else {
     const matchPassword = await User.comparePassword(

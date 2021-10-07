@@ -413,9 +413,9 @@ export const activar = async (req, res) => {
 };
 
 export const renovar = async (req, res) => {
-  let d = new Date();
-  const userFound = await Users.findByIdAndDelete(req.params.userId);
-  var newvalues = { $set: { licencia: d.setDate(userFund.licencia + 30), } };
+  
+  const userFound = await Users.findById(req.params.userId);
+  var newvalues = { $set: { licencia: new Date(userFound.licencia.getTime() + 2592000000), } };
   const userActualizado = await Users.findByIdAndUpdate(
     req.params.userId,
     newvalues,
@@ -424,6 +424,7 @@ export const renovar = async (req, res) => {
     }
   );
   res.status(204).json(userActualizado);
+
 };
 
 export const pertenecen = async (req, res) => {

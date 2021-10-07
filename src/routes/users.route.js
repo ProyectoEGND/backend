@@ -24,7 +24,7 @@ router.post('/reasigna', userCrt.reasignarUserById);
 router.post('/renovar', userCrt.reasignarUserById);
 
 router.put('/masivo/:userId', userCrt.updateUserByIdImg);
-router.put('/renovar/:userId', userCrt.renovar);
+router.put('/renovarLicencia/:userId',verifyToken, userCrt.renovar);
 router.put('/redes', verifyToken, userCrt.updateRedes);
 router.put('/horarios', verifyToken, userCrt.updateHorarioById);
 router.put('/:userId', userCrt.updateUserById);
