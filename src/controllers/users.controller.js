@@ -258,6 +258,15 @@ export const updateUserById2 = async (req, res) => {
       preferencias,
     };
   }
+  if (req.body.pixelFacebook !== undefined) {
+    console.log('pixel',req.body.pixelFacebook)
+    preferencias.pixelFacebook = req.body.pixelFacebook;
+    preferencias.analitycsGoogle = req.body.analitycsGoogle;
+
+    update = {
+      preferencias,
+    };
+  }
   if (req.body.montoMin || req.body.montoMin === 0) {
     console.log(req.body.montoMin);
     console.log("monto extra", req.body.montoExtra);
@@ -539,6 +548,14 @@ export const createUsers = async (req, res) => {
   const defaultValue = {
     estadoTienda: true,
     mensajeCerrado: "Esta Cerrado",
+    pixelFacebook:{
+      activo:false,
+      id:''
+    },
+    analitycsGoogle:{
+      activo:false,
+      id:''
+    },
     horario: [
       {
         apertura: 0,

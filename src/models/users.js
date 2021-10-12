@@ -85,6 +85,14 @@ const userSchema = new Schema(
       alta:Date,
       estadoTienda: Boolean,
       mensajeCerrado: String,
+      pixelFacebook:{
+        estado:Boolean,
+        id:String
+      },
+      analitycsGoogle:{
+        estado:Boolean,
+        id:String
+      },
       horario: [
         {
           apertura: Number,
