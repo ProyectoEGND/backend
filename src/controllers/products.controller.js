@@ -4,7 +4,7 @@ import Categoria from '../models/categoria';
 import SubCategoria from '../models/subcategoria';
 
 export const createProduct = async (req, res) => {
-	try {
+	// try {
 		const {
 			sku,
 			nombre,
@@ -73,9 +73,9 @@ export const createProduct = async (req, res) => {
 			const savedOperacion = await newOperacion.save();
 			res.status(200).json(productSave);
 		}
-	} catch (error) {
-		res.status(500).json({ mensaje: 'Valide datos ingresados' });
-	}
+	// } catch (error) {
+	// 	res.status(500).json({ mensaje: 'Valide datos ingresados' });
+	// }
 };
 
 export const createProductM = async (req, res) => {
