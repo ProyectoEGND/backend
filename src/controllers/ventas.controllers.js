@@ -64,7 +64,7 @@ export const createVenta = async (req, res) => {
 	const aPagar=montoTotal+montoDelivery+montoExtra
 
 	if (stripe.activo === true) {
-		let urlStripe = await pagosStripe((aPagar),stripe.accessToken,moneda,stripe.porcentaje);
+		let urlStripe = await pagosStripe((aPagar),stripe.accessToken,moneda,stripe.porcentaje,tienda:req.params.tienda);
 		console.log('stripe', urlStripe);
 		newVenta.stripe = urlStripe;
 	}
@@ -148,7 +148,7 @@ const pagos = async (access_token, productos) => {
 };
 
 
-const pagosStripe=async (monto,privateKey,moneda,costo) => {
+const pagosStripe=async (monto,privateKey,moneda,costo,tienda) => {
 	const monedaOpciones = [
 		{ moneda: 'PESO ARS - ARGENTINA', simbolo: '$',currency:"ars" },
 		{ moneda: 'DOLAR', simbolo: 'US$',currency:'usd'},
@@ -193,8 +193,8 @@ const pagosStripe=async (monto,privateKey,moneda,costo) => {
 		  payment_method_types: [
 			'card',
 		  ],
-		  success_url: `http://18.218.25.115:3001/pago_ok`,
-    	  cancel_url: `http://18.218.25.115:3001/error_de_pago`,
+		  success_url: `http://18.218.25.115:3001/${tienda}/pago_ok`,
+    	  cancel_url: `http://18.218.25.115:3001/${tienda}/error_de_pago`,
 		  mode: 'payment'
 		});
 		 return session.url;
