@@ -185,7 +185,7 @@ const pagosStripe=async (monto,privateKey,moneda,costo,tienda) => {
 			  product_data: {
 				name: 'Monto extra por medio de pago electronico',
 			  },
-			  unit_amount: costo * 100,
+			  unit_amount: (costo ? costo : 0) * 100,
 			},
 			quantity: 1,
 		  }

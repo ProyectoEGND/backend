@@ -657,10 +657,12 @@ export const createUsers = async (req, res) => {
       mercadoPago: {
         activo: false,
         accessToken: "",
+        porcentaje: 0
       },
       stripe: {
         activo: false,
         accessToken: "",
+        porcentaje: 0
       },
       licencia: d.setDate(d.getDate() + 30),
       alta:d.getDate(),
