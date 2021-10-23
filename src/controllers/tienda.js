@@ -4,7 +4,7 @@ import Producto from '../models/products';
 import Cupon from '../models/vales';
 
 export const getTienda = async (req, res) => {
-	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda.toLowerCase() } });
+	let foundPreference = await Users.find({ tienda: { $in: req.params.tienda.toLowerCase() } });
 	if (foundPreference.length == 0) {
 		foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
 	}
