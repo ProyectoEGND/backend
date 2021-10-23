@@ -28,6 +28,7 @@ router.put('/renovarLicencia/:userId',verifyToken, userCrt.renovar);
 router.put('/redes', verifyToken, userCrt.updateRedes);
 router.put('/horarios', verifyToken, userCrt.updateHorarioById);
 router.put('/:userId', userCrt.updateUserById);
+router.put('/userDetails/:userId', userCrt.UserPasswordById);
 
 // router.put('/updateCuerpo', verifyToken, upload.any('superior'), userCrt.updateCuerpoById);
 // router.put('/updateFooter', verifyToken, upload.any('inferior'), userCrt.updateFooterById);

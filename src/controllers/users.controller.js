@@ -244,6 +244,34 @@ export const updateUserById = async (req, res) => {
   res.status(200).json(userActualizado);
 };
 
+export const UserPasswordById = async (req, res) => {
+  try {
+  const user = await Users.findById(req.params.userId);
+  let preferencias = user.preferencias;
+
+  preferencias.desarrollado=req.body.desarrollado 
+  const actualizar = {
+    username:req.body.username,
+    cuit: req.body.cuit,
+    nombre: req.body.nombre,
+    celular: req.body.celular,
+    password: req.body.password ? await Users.encryptPassword(req.body.password) : user.password,
+    preferencias
+  }
+  const userActualizado = await Users.findByIdAndUpdate(
+    req.params.userId,
+    actualizar,
+    {
+      new: true,
+    }
+  );
+
+  res.json({ message: "Usuario actualizado correctamente" });
+  }catch (error) {
+    res.json({ message: "Error al actualizar usuario" });
+  }
+};
+
 
 export const updateUserById2 = async (req, res) => {
   let update;
@@ -698,7 +726,7 @@ export const createUsers = async (req, res) => {
       expiresIn: 86400,
     });
     // enviar(email, tienda, username).catch(console.error);
-    res.json({ message: "Usuario dato de alta" });
+    res.json({ message: "Usuario dado de alta" });
   } catch (error) {
     console.log(error);
     if (validaUsuario) {
