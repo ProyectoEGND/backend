@@ -4,7 +4,10 @@ import Producto from '../models/products';
 import Cupon from '../models/vales';
 
 export const getTienda = async (req, res) => {
-	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
+	const foundPreference = await Users.find({ tienda: { $in: req.params.tienda.toLowerCase() } });
+	if (foundPreference.length == 0) {
+		foundPreference = await Users.find({ tienda: { $in: req.params.tienda } });
+	}
 	if (foundPreference.length == 0 || foundPreference[0].estado === 'Inactivo') {
 		res.status(404).json({ tienda: 'inexistente' });
 	} else {
@@ -19,6 +22,9 @@ export const getTienda = async (req, res) => {
 
 export const getProductos = async (req, res) => {
 	const foundProducto = await Producto.find({ tienda: { $in: req.params.tienda } });
+	if (foundProducto.length == 0) {
+		foundProducto = await Producto.find({ tienda: { $in: req.params.tienda.toLowerCase() } });
+	}
 	const conStock = foundProducto.filter((producto) => producto.stock > 0 && producto.activo === true);
 	res.status(200).json(conStock);
 };

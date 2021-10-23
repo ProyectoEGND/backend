@@ -638,7 +638,7 @@ export const createUsers = async (req, res) => {
     terminos:
       '{"blocks":[{"key":"1inev","text":"Ingrese sus terminos y condiciones","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
   };
-  const validaEmail = await Users.findOne({ email: req.body.email });
+  const validaEmail = await Users.findOne({ email: req.body.email.toLowerCase() });
   const validaUsuario = await Users.findOne({ username: req.body.username });
   const validaCuit = await Users.findOne({ cuit: req.body.email });
 
@@ -646,7 +646,7 @@ export const createUsers = async (req, res) => {
     let d = new Date();
     const newUser = new Users({
       username,
-      email,
+      email:email.toLowerCase(),
       tienda: "sin datos",
       cuit,
       nombre,
@@ -670,7 +670,7 @@ export const createUsers = async (req, res) => {
     });
 
     if (tienda) {
-      newUser.tienda = tienda;
+      newUser.tienda = tienda.toLowerCase();
     }
 
     if (req.padre) {

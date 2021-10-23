@@ -138,8 +138,8 @@ export const signUp = async (req, res) => {
   let d = new Date();
   const newUser = new User({
     username,
-    email,
-    tienda,
+    email:email.toLowerCase(),
+    tienda: tienda.toLowerCase(),
     cuit,
     nombre,
     celular,
