@@ -254,7 +254,6 @@ export const UserPasswordById = async (req, res) => {
     username:req.body.username,
     cuit: req.body.cuit,
     nombre: req.body.nombre,
-    celular: req.body.celular,
     password: req.body.password ? await Users.encryptPassword(req.body.password) : user.password,
     preferencias
   }
