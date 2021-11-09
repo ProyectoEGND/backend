@@ -109,7 +109,7 @@ export const createProductM = async (req, res) => {
 		estado: true,
 		subcategoria,
 		marca,
-		Composicion:Composicion === 'SI' ? true : false,
+		Composicion,
 		Componentes,
 		stockMinimo,
 		stockInicial: stockInicial ? stockInicial : 0,
