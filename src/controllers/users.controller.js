@@ -57,7 +57,7 @@ export const updateHeadById = async (req, res) => {
     console.log("envio imagen");
     const { filename } = req.file;
 
-    preferencias.logo = `http://18.218.25.115:4000/public/${filename}`;
+    preferencias.logo = `https://api.tienda.delivery/public/${filename}`;
   }
 
   const userActualizado = await Users.findByIdAndUpdate(
@@ -127,7 +127,7 @@ export const updateModalById = async (req, res) => {
   if (req.file) {
     const { filename } = req.file;
 
-    preferencias.imodal = `http://18.218.25.115:4000/public/${filename}`;
+    preferencias.imodal = `https://api.tienda.delivery/public/${filename}`;
   }
 
   const userActualizado = await Users.findByIdAndUpdate(
@@ -161,7 +161,7 @@ export const updateFooterById = async (req, res) => {
     req.files.map((file) => {
       const { filename } = file;
 
-      arraySuperior.push(`http://18.218.25.115:4000/public/${filename}`);
+      arraySuperior.push(`https://api.tienda.delivery/public/${filename}`);
     });
     preferencias.imagenesF = arraySuperior;
   }
@@ -194,7 +194,7 @@ export const updateCuerpoById = async (req, res) => {
     req.files.map((file) => {
       const { filename } = file;
 
-      arraySuperior.push(`http://18.218.25.115:4000/public/${filename}`);
+      arraySuperior.push(`https://api.tienda.delivery/public/${filename}`);
     });
     preferencias.imagenesH = arraySuperior;
   }
@@ -649,8 +649,8 @@ export const createUsers = async (req, res) => {
     imagenesF: [],
     modal: true,
     tmodal: "texto de prueba",
-    imodal: "http://18.218.25.115:4000/public/logo.jpg",
-    logo: "http://18.218.25.115:4000/public/logo.jpg",
+    imodal: "https://api.tienda.delivery/public/logo.jpg",
+    logo: "https://api.tienda.delivery/public/logo.jpg",
     whatsapp: "#",
     youtube: "#",
     facebook: "#",
