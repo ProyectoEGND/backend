@@ -193,8 +193,8 @@ const pagosStripe=async (monto,privateKey,moneda,costo,tienda) => {
 		  payment_method_types: [
 			'card',
 		  ],
-		  success_url: `http://18.218.25.115:3001/${tienda}/pago_ok`,
-    	  cancel_url: `http://18.218.25.115:3001/${tienda}/error_de_pago`,
+		  success_url: `https://tienda.delivery/${tienda}/pago_ok`,
+    	  cancel_url: `https://tienda.delivery/${tienda}/error_de_pago`,
 		  mode: 'payment'
 		});
 		 return session.url;
